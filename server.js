@@ -6,7 +6,7 @@ const server = fastify();
 
 const database = new DatabasePostgres();
 
-server.post('/videos', async (request, reply) => {
+server.post('/usuarios', async (request, reply) => {
     const { title, description, duration } = request.body
 
     await database.create({
@@ -18,15 +18,15 @@ server.post('/videos', async (request, reply) => {
     return reply.status(201).send()
 })
 
-server.get('/videos', async (request, reply) => {
+server.get('/usuarios', async (request, reply) => {
     const search = request.query.search
     console.log(search)
-    const videos = await database.list(search)
+    const usuarios = await database.list(search)
 
-    return videos
+    return usuarios
 })
 
-server.put('/videos/:id', (request, reply) => {
+server.put('/usuarios/:id', (request, reply) => {
     const videoId = request.params.id
     const { title, description, duration } = request.body
 
@@ -39,7 +39,7 @@ server.put('/videos/:id', (request, reply) => {
     return reply.status(204).send()
 })
 
-server.delete('/videos/:id', (request, reply) => {
+server.delete('/usuarios/:id', (request, reply) => {
     const videoId = request.params.id
 
     database.delete(videoId)
