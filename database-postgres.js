@@ -2,49 +2,53 @@ import { randomUUID } from "crypto"
 import { sql } from "./db.js"
 
 export class DatabasePostgres {
-    #videos = new Map()
+    #usuarios = new Map()
 
     async list(search = '') {
-        let videos
+        let usuarios
 
         if (search) {
-            videos = await sql`
+            usuarios = await sql`
                 select *
-                from videos
-                where title ilike ${`%${search}%`}`
+                from usuarios
+                where nome ilike ${`%${search}%`}`
         }else {
-            videos = await sql`
+            usuarios = await sql`
                 select *
-                from videos`
+                from usuarios`
         }
 
-        return videos
+        return usuarios
     }
 
-    async create(video) {
-        const videoId = randomUUID()
-        const { title, description, duration } = video
+    async create(usuario) {
+        const { nome, data_nascimento, idade, sexo, email, senha } = usuario;
 
         await sql`
-            insert into videos (id, title, description, duration)
-            values (${videoId}, ${title}, ${description}, ${duration})
-        `
+            insert into usuarios (nome, data_nascimento, idade, sexo, email, senha)
+            values (${nome}, ${data_nascimento}, ${idade}, ${sexo}, ${email}, ${senha})
+        `;
     }
 
-    async update(id, video) {
-        const { title, description, duration } = video
+    async update(id, usuario) {
+        const { nome, data_nascimento, idade, sexo, email, senha } = usuario;
 
         await sql`
-            update videos
-            set title = ${title}, description = ${description}, duration = ${duration}
+            update usuarios
+            set nome = ${nome}, 
+                data_nascimento = ${data_nascimento}, 
+                idade = ${idade}, 
+                sexo = ${sexo}, 
+                email = ${email}, 
+                senha = ${senha}
             where id = ${id}
-        `
+        `;
     }
 
     async delete(id) {
-         await sql`
-            delete from videos
+        await sql`
+            delete from usuarios
             where id = ${id}
-        `      
+        `;
     }
 }

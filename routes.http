@@ -1,4 +1,4 @@
-POST http://localhost:8080/videos
+POST http://localhost:8080/usuarios
 Content-Type: application/json
 
 {
@@ -8,11 +8,12 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:8080/videos 
-# GET http://localhost:8080/videos?search=node
+# GET http://localhost:8080/health
+GET http://localhost:8080/usuarios 
+# GET http://localhost:8080/usuarios?search=node
 
 ###
-PUT http://localhost:8080/videos/3931e22e-ebcb-45c4-a8e9-2cc52d00bfd7
+PUT http://localhost:8080/usuarios/3931e22e-ebcb-45c4-a8e9-2cc52d00bfd7
 Content-Type: application/json
 
 {
@@ -22,4 +23,4 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:8080/videos/37ba28bd-8d72-4055-9929-f28c7a3f594d
+DELETE http://localhost:8080/usuarios/37ba28bd-8d72-4055-9929-f28c7a3f594d
