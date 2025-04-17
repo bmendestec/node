@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 
 export class UserRepositoryPostgres extends UserRepository {
     async create(user) {
-        const { nome, data_nascimento, idade, sexo, email, senha } = usuario;
+        const { nome, data_nascimento, idade, sexo, email, senha } = user;
         const hashedPassword = await bcrypt.hash(senha, 10);
 
         await sql`
