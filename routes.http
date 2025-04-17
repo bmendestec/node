@@ -20,9 +20,13 @@ PUT http://localhost:8080/usuarios/2
 Content-Type: application/json
 
 {
-    "nome": "Bruno Paula Mendes",
+    "id": 2,
+    "nome": "Bruno Mendes",
+    "idade": 28,
+    "email": "bruno@gmail.com",
     "data_nascimento": "1997-02-28",
-    "idade": 28
+    "sexo": "Masculino",
+    "senha": "123456"
 }
 
 ###
