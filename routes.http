@@ -2,24 +2,30 @@ POST http://localhost:8080/usuarios
 Content-Type: application/json
 
 {
-    "title": "Video node",
-    "description": "Video 01 description",
-    "duration": 60
+    "nome": "Lucas",
+    "data_nascimento": "2000-01-01",
+    "idade": 23,
+    "sexo": "masculino",
+    "email": "lucas@gmail.com",
+    "senha": "123456"
 }
 
 ###
 # GET http://localhost:8080/health
-GET http://localhost:8080/usuarios 
-# GET http://localhost:8080/usuarios?search=node
+# GET http://localhost:8080/usuarios 
+GET http://localhost:8080/usuarios?search=Bruno
 
 ###
-PUT http://localhost:8080/usuarios/3931e22e-ebcb-45c4-a8e9-2cc52d00bfd7
+PUT http://localhost:8080/usuarios/3
 Content-Type: application/json
 
 {
-    "title": "Video Nodeeee",
-    "description": "Video 01 description",
-    "duration": 60
+    "nome": "Lucas",
+    "data_nascimento": "2002-01-01",
+    "idade": 23,
+    "sexo": "Masculino",
+    "email": "lucas@gmail.com",
+    "senha": "123456"
 }
 
 ###

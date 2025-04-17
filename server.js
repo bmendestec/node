@@ -12,10 +12,6 @@ usuariosRoutes(server, database);
 // Registra as rotas de tarefas
 tarefasRoutes(server, database);
 
-server.get('/health', async (request, reply) => {
-    return { status: 'ok' };
-});
-
 server.listen({ port: 8080 }, (err, address) => {
     if (err) {
         console.error(err);
