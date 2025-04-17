@@ -1,16 +1,15 @@
 import { fastify } from 'fastify';
-import { DatabasePostgres } from './database-postgres.js';
-import usuariosRoutes from './routes/usuarios.js';
 import tarefasRoutes from './routes/tarefas.js';
+import userRoutes from './routes/Users.js';
 
 const server = fastify();
-const database = new DatabasePostgres();
 
 // Registra as rotas de usuários
-usuariosRoutes(server, database);
+// usuariosRoutes(server, database);
+userRoutes(server);
 
 // Registra as rotas de tarefas
-tarefasRoutes(server, database);
+// tarefasRoutes(server, database);
 
 server.listen({ port: 8080 }, (err, address) => {
     if (err) {

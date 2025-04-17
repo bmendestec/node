@@ -16,16 +16,13 @@ Content-Type: application/json
 GET http://localhost:8080/usuarios?search=Bruno
 
 ###
-PUT http://localhost:8080/usuarios/3
+PUT http://localhost:8080/usuarios/2
 Content-Type: application/json
 
 {
-    "nome": "Lucas",
-    "data_nascimento": "2002-01-01",
-    "idade": 23,
-    "sexo": "Masculino",
-    "email": "lucas@gmail.com",
-    "senha": "123456"
+    "nome": "Bruno Paula Mendes",
+    "data_nascimento": "1997-02-28",
+    "idade": 28
 }
 
 ###
