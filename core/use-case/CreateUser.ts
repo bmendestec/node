@@ -13,11 +13,6 @@ export class CreateUser {
             throw new Error('Invalid user data');
         }
         
-        const existingUser = await this.userRepository.list(userData.nome);
-        if (existingUser) {
-            throw new Error('User already exists');
-        }
-        
         const user = await this.userRepository.create(userData);
         return user;
     }

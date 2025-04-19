@@ -2,11 +2,11 @@ POST http://localhost:8080/usuarios
 Content-Type: application/json
 
 {
-    "nome": "Lucas",
-    "data_nascimento": "2000-01-01",
-    "idade": 23,
-    "sexo": "masculino",
-    "email": "lucas@gmail.com",
+    "nome": "Camila",
+    "data_nascimento": "1991-01-01",
+    "idade": 34,
+    "sexo": "Feminino",
+    "email": "cami@gmail.com",
     "senha": "123456"
 }
 
@@ -21,7 +21,7 @@ Content-Type: application/json
 
 {
     "id": 2,
-    "nome": "Bruno Mendes",
+    "nome": "Camila",
     "idade": 28,
     "email": "bruno@gmail.com",
     "data_nascimento": "1997-02-28",
