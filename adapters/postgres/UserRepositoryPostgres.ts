@@ -55,4 +55,9 @@ export class UserRepositoryPostgres extends UserRepository {
             where id = ${id}
         `;
     }
+
+    async findByEmail(email: string): Promise<User | null> {
+        const users = await sql<User[]>`SELECT * FROM usuarios WHERE email = ${email}`;
+        return users[0] || null;
+    }
 }

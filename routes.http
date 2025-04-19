@@ -13,7 +13,7 @@ Content-Type: application/json
 ###
 # GET http://localhost:8080/health
 GET http://localhost:8080/usuarios 
-# GET http://localhost:8080/usuarios?search=Mendes
+# GET http://localhost:8080/usuarios?search=cami
 
 ###
 PUT http://localhost:8080/usuarios/2
@@ -30,4 +30,4 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:8080/usuarios/37ba28bd-8d72-4055-9929-f28c7a3f594d
+DELETE http://localhost:8080/usuarios/7
