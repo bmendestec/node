@@ -12,8 +12,8 @@ Content-Type: application/json
 
 ###
 # GET http://localhost:8080/health
-# GET http://localhost:8080/usuarios 
-GET http://localhost:8080/usuarios?search=Bruno
+GET http://localhost:8080/usuarios 
+# GET http://localhost:8080/usuarios?search=Mendes
 
 ###
 PUT http://localhost:8080/usuarios/2

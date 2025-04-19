@@ -1,28 +1,29 @@
-import { fastify } from 'fastify';
+import fastify, { FastifyInstance, FastifyError, FastifyReply, FastifyRequest } from 'fastify';
 import cors from '@fastify/cors';
 // import tarefasRoutes from './routes/tarefas.js';
-import userRoutes from './routes/Users.js';
+import userRoutes from '../web/routes/Users.js';
 
-const server = fastify();
+const server: FastifyInstance = fastify();
 
 await server.register(cors, {
-    origin: 'http://localhost:5173', // Permite requisições desta origem
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+    origin: 'http://localhost:5173',
+    methods: ['GET', 'POST', 'PUT', 'DELETE']
 });
 
-// Registra as rotas de usuários
-// usuariosRoutes(server, database);
 userRoutes(server);
 
-server.setErrorHandler((error, request, reply) => {
+server.setErrorHandler((error: FastifyError, request: FastifyRequest, reply: FastifyReply) => {
     console.error(error); // Log detalhado do erro no terminal
     reply.status(500).send({ error: 'Internal Server Error', message: error.message });
 });
 
 // Registra as rotas de tarefas
 // tarefasRoutes(server, database);
+const host = '127.0.0.1';
+const port = 8080;
 
-server.listen({ port: 8080 }, (err, address) => {
+// Inicia o servidor
+server.listen({ host, port }, (err, address) => {
     if (err) {
         console.error(err);
         process.exit(1);
