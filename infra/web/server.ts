@@ -1,8 +1,11 @@
 import fastify, { FastifyInstance, FastifyError, FastifyReply, FastifyRequest } from 'fastify';
 import cors from '@fastify/cors';
-import fastifyCookie from '@fastify/cookie';
+import cookie, { FastifyCookieOptions } from '@fastify/cookie';
 // import tarefasRoutes from './routes/tarefas.js';
 import userRoutes from '../web/routes/Users.js';
+import loginRoutes from '../../auth/authRoutes.js'
+import dotenv from 'dotenv';
+dotenv.config();
 
 const server: FastifyInstance = fastify();
 
@@ -11,11 +14,15 @@ await server.register(cors, {
     methods: ['GET', 'POST', 'PUT', 'DELETE']
 });
 
-await server.register(fastifyCookie,{
-    secret: process.env.COOKIE_SECRET || 'default_secret',
+await server.register(cookie,{
+    secret: process.env.JWT_SECRET || 'default_secret',
+    parseOptions: {
+        httpOnly: true,
+        
+    }
+} as FastifyCookieOptions);
 
-});
-
+await loginRoutes(server);
 userRoutes(server);
 
 server.setErrorHandler((error: FastifyError, request: FastifyRequest, reply: FastifyReply) => {

@@ -9,9 +9,9 @@ export async function authMiddleware(request: FastifyRequest, reply: FastifyRepl
         return reply.status(401).send({ message: 'Unauthorized' });
     }
 
-    try {
+    try {        
         const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: number; email: string };
-        request.user = decoded;
+        request.user = decoded;        
     } catch (error) {
         console.error('Token inválido', error);
         return reply.status(401).send({ message: 'Unauthorized' });

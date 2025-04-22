@@ -1,33 +1,42 @@
-POST http://localhost:8080/usuarios
+# POST http://localhost:8080/usuarios
+# Content-Type: application/json
+
+# {
+#     "nome": "Teste1",
+#     "data_nascimento": "1991-01-01",
+#     "idade": 34,
+#     "sexo": "Masculino",
+#     "email": "teste1@gmail.com",
+#     "senha": "teste1@gmail.com"
+# }
+
+POST https://localhost:8080/login
 Content-Type: application/json
 
 {
-    "nome": "Camila",
-    "data_nascimento": "1991-01-01",
-    "idade": 34,
-    "sexo": "Feminino",
-    "email": "cami@gmail.com",
-    "senha": "123456"
+    "email": "teste1@gmail.com",
+    "senha": "teste1@gmail.com"
 }
+
+# POST http://localhost:8080/logout
 
 ###
 # GET http://localhost:8080/health
-GET http://localhost:8080/usuarios 
-# GET http://localhost:8080/usuarios?search=cami
+GET https://localhost:8080/usuarios 
+# GET http://localhost:8080/usuarios?search=teste1@gmail.com
 
 ###
-PUT http://localhost:8080/usuarios/2
+PUT http://localhost:8080/usuarios/15
 Content-Type: application/json
 
 {
-    "id": 2,
-    "nome": "Camila",
+    "id": 15,
+    "nome": "Bruno 2",
     "idade": 28,
-    "email": "bruno@gmail.com",
+    "email": "bruno2@gmail.com",
     "data_nascimento": "1997-02-28",
-    "sexo": "Masculino",
-    "senha": "123456"
+    "sexo": "Masculino"
 }
 
 ###
-DELETE http://localhost:8080/usuarios/7
+DELETE http://localhost:8080/usuarios/15

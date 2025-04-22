@@ -26,7 +26,7 @@ export class UserRepositoryPostgres extends UserRepository {
 
     async edit(id: number, user: User): Promise<User> {
         const existingUser = await sql<User[]>`SELECT * FROM usuarios WHERE id = ${id}`;
-        const { nome, data_nascimento, idade, sexo, email, senha } = user;
+        const { nome, data_nascimento, idade, sexo, email } = user;
         if (!existingUser.length) {
             throw new Error("User not found");
         };
@@ -36,8 +36,7 @@ export class UserRepositoryPostgres extends UserRepository {
                 data_nascimento = ${data_nascimento}, 
                 idade = ${idade}, 
                 sexo = ${sexo}, 
-                email = ${email}, 
-                senha = ${senha}
+                email = ${email}
             where id = ${id}
         `;
 
