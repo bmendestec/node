@@ -1,26 +1,47 @@
-POST http://localhost:8080/usuarios
+# POST http://localhost:8080/usuarios
+# Content-Type: application/json
+# Headers: Authorization Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1NjgzODYyLCJleHAiOjE3NDU2ODc0NjJ9.2r2cHq7V5gCVq1079-Oc8z72n_asQ3kntDSfsoKED7c
+
+# {
+#     "nome": "Teste1",
+#     "data_nascimento": "1991-01-01",
+#     "idade": 34,
+#     "sexo": "Masculino",
+#     "email": "teste1@gmail.com",
+#     "senha": "teste1@gmail.com"
+# }
+
+POST http://localhost:8080/login
 Content-Type: application/json
 
 {
-    "title": "Video node",
-    "description": "Video 01 description",
-    "duration": 60
+    "email": "bruno@gmail.com",
+    "senha": "bruno@gmail.com"
 }
 
 ###
+# GET http://localhost:8080/logout
 # GET http://localhost:8080/health
-GET http://localhost:8080/usuarios 
-# GET http://localhost:8080/usuarios?search=node
+# GET http://localhost:8080/usuarios
+# Headers: Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1NjgxNTM2LCJleHAiOjE3NDU2ODUxMzZ9.OfsV_K0rf2ucFCCv4dHh7SJiapBgHxTQsv8Hht_cfO8
+
+GET http://localhost:8080/usuarios?search=bruno@gmail.com
+Headers: 
+    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1NjgzODYyLCJleHAiOjE3NDU2ODc0NjJ9.2r2cHq7V5gCVq1079-Oc8z72n_asQ3kntDSfsoKED7c
+# GET http://localhost:8080/token-validate
 
 ###
-PUT http://localhost:8080/usuarios/3931e22e-ebcb-45c4-a8e9-2cc52d00bfd7
+PUT http://localhost:8080/usuarios/15
 Content-Type: application/json
 
 {
-    "title": "Video Nodeeee",
-    "description": "Video 01 description",
-    "duration": 60
+    "id": 15,
+    "nome": "Bruno 2",
+    "idade": 28,
+    "email": "bruno2@gmail.com",
+    "data_nascimento": "1997-02-28",
+    "sexo": "Masculino"
 }
 
 ###
-DELETE http://localhost:8080/usuarios/37ba28bd-8d72-4055-9929-f28c7a3f594d
+DELETE http://localhost:8080/usuarios/15
