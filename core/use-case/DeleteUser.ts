@@ -1,4 +1,4 @@
-import { CreateUserDependencies } from '../../types/User.js';
+import { CreateUserDependencies } from '../entities/User.js';
 
 export class DeleteUser {
     constructor(private userRepository: CreateUserDependencies['userRepository']) {

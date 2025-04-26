@@ -1,6 +1,6 @@
 import { sql } from "../../infra/database/db.js";
 import { UserRepository } from "../../ports/UserRepository.js";
-import { User } from "../../types/User.js";
+import { User } from "../../core/entities/User.js";
 import bcrypt from "bcrypt";
 
 export class UserRepositoryPostgres implements UserRepository {

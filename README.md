@@ -81,8 +81,11 @@ The project follows the Hexagonal Architecture (Ports and Adapters) pattern, org
 - **POST /login**  
   Authenticate a user and return a JWT token.
 
-- **POST /logout**  
+- **GET /logout**  
   Invalidate the user's token.
+
+- **GET /validate-token**
+  Check if the token is valid.
 
 ### Users
 - **POST /usuarios**  
@@ -100,7 +103,7 @@ The project follows the Hexagonal Architecture (Ports and Adapters) pattern, org
 ## Additional Notes
 
 - Ensure Node.js and npm are installed on your system.
-- Redis must be running on the configured host and port.
+- Redis is used to store tokens in memory for authentication purposes. Ensure Redis is running on the configured host and port.
 - Refer to the `/docs` folder for detailed API documentation.
 - Contributions are welcome! Feel free to submit a pull request.
 - For issues or questions, open a ticket in the repository's issue tracker.
