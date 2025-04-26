@@ -84,7 +84,7 @@ The project follows the Hexagonal Architecture (Ports and Adapters) pattern, org
 - **GET /logout**  
   Invalidate the user's token.
 
-- **GET /validate-token**
+- **GET /validate-token**  
   Check if the token is valid.
 
 ### Users
