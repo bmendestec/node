@@ -3,7 +3,7 @@ import { UserRepository } from "../../ports/UserRepository.js";
 import { User } from "../../types/User.js";
 import bcrypt from "bcrypt";
 
-export class UserRepositoryPostgres extends UserRepository {
+export class UserRepositoryPostgres implements UserRepository {
 
     async create(user: User): Promise<User> {
         const { nome, data_nascimento, idade, sexo, email, senha } = user;
@@ -56,7 +56,16 @@ export class UserRepositoryPostgres extends UserRepository {
     }
 
     async findByEmail(email: string): Promise<User | null> {
-        const users = await sql<User[]>`SELECT * FROM usuarios WHERE email = ${email}`;
-        return users[0] || null;
+        try {
+            const existingUser = await sql<User[]>`SELECT * FROM usuarios WHERE email = ${email}`;
+            if (!existingUser.length) {
+                return null;
+            }
+            return existingUser[0];
+        }
+        catch (error) { 
+            console.error("Error finding user by email:", error);
+            throw new Error("Database error");
+        }
     }
 }

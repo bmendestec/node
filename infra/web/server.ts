@@ -1,11 +1,7 @@
 import fastify, { FastifyInstance, FastifyError, FastifyReply, FastifyRequest } from 'fastify';
 import cors from '@fastify/cors';
-import cookie, { FastifyCookieOptions } from '@fastify/cookie';
-// import tarefasRoutes from './routes/tarefas.js';
 import userRoutes from '../web/routes/Users.js';
-import loginRoutes from '../../auth/authRoutes.js'
-import dotenv from 'dotenv';
-dotenv.config();
+import loginRoutes from './routes/Login.js';
 
 const server: FastifyInstance = fastify();
 
@@ -14,26 +10,16 @@ await server.register(cors, {
     methods: ['GET', 'POST', 'PUT', 'DELETE']
 });
 
-await server.register(cookie,{
-    secret: process.env.JWT_SECRET || 'default_secret',
-    parseOptions: {
-        httpOnly: true,
-        
-    }
-} as FastifyCookieOptions);
-
 await loginRoutes(server);
-userRoutes(server);
+await userRoutes(server);
 
 server.setErrorHandler((error: FastifyError, request: FastifyRequest, reply: FastifyReply) => {
-    console.error(error); // Log detalhado do erro no terminal
+    console.error(error);
     reply.status(500).send({ error: 'Internal Server Error', message: error.message });
 });
 
-// Registra as rotas de tarefas
-// tarefasRoutes(server, database);
-const host = '127.0.0.1';
-const port = 8080;
+const host = process.env.HOST || 'localhost';
+const port = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 
 // Inicia o servidor
 server.listen({ host, port }, (err, address) => {

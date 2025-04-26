@@ -1,5 +1,6 @@
 # POST http://localhost:8080/usuarios
 # Content-Type: application/json
+# Headers: Authorization Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1NjgzODYyLCJleHAiOjE3NDU2ODc0NjJ9.2r2cHq7V5gCVq1079-Oc8z72n_asQ3kntDSfsoKED7c
 
 # {
 #     "nome": "Teste1",
@@ -10,20 +11,24 @@
 #     "senha": "teste1@gmail.com"
 # }
 
-POST https://localhost:8080/login
+POST http://localhost:8080/login
 Content-Type: application/json
 
 {
-    "email": "teste1@gmail.com",
-    "senha": "teste1@gmail.com"
+    "email": "bruno@gmail.com",
+    "senha": "bruno@gmail.com"
 }
 
-# POST http://localhost:8080/logout
-
 ###
+# GET http://localhost:8080/logout
 # GET http://localhost:8080/health
-GET https://localhost:8080/usuarios 
-# GET http://localhost:8080/usuarios?search=teste1@gmail.com
+# GET http://localhost:8080/usuarios
+# Headers: Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1NjgxNTM2LCJleHAiOjE3NDU2ODUxMzZ9.OfsV_K0rf2ucFCCv4dHh7SJiapBgHxTQsv8Hht_cfO8
+
+GET http://localhost:8080/usuarios?search=bruno@gmail.com
+Headers: 
+    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1NjgzODYyLCJleHAiOjE3NDU2ODc0NjJ9.2r2cHq7V5gCVq1079-Oc8z72n_asQ3kntDSfsoKED7c
+# GET http://localhost:8080/token-validate
 
 ###
 PUT http://localhost:8080/usuarios/15

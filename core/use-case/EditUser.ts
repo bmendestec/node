@@ -1,9 +1,7 @@
 import { User, CreateUserDependencies } from '../../types/User.js';
 
 export class EditUser {
-    private userRepository: CreateUserDependencies['userRepository'];
-
-    constructor({ userRepository }: CreateUserDependencies) {
+    constructor(private userRepository: CreateUserDependencies['userRepository']) {
         this.userRepository = userRepository;
     }
 
