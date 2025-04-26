@@ -1,47 +1,68 @@
-# POST http://localhost:8080/usuarios
+# HTTP request for testing the API endpoints
+# You can run this file using the REST Client extension in Visual Studio Code
+
+# Login a user
+# POST http://localhost:8080/login
 # Content-Type: application/json
-# Headers: Authorization Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1NjgzODYyLCJleHAiOjE3NDU2ODc0NjJ9.2r2cHq7V5gCVq1079-Oc8z72n_asQ3kntDSfsoKED7c
 
 # {
-#     "nome": "Teste1",
-#     "data_nascimento": "1991-01-01",
-#     "idade": 34,
-#     "sexo": "Masculino",
-#     "email": "teste1@gmail.com",
-#     "senha": "teste1@gmail.com"
+#     "email": "bruno@gmail.com",
+#     "senha": "bruno@gmail.com"
 # }
 
-POST http://localhost:8080/login
+# Create a new user
+POST http://localhost:8080/usuarios
 Content-Type: application/json
+Headers: 
+    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1Njg4Mzk2LCJleHAiOjE3NDU2OTE5OTZ9.n3AnAPWprU6nL2hiq5lvMLSE57QXq8bpn68hfYNTxuc
 
 {
-    "email": "bruno@gmail.com",
-    "senha": "bruno@gmail.com"
+    "nome": "Bruno Paula Mendes",
+    "data_nascimento": "1997-02-28",
+    "idade": 28,
+    "sexo": "Masculino",
+    "email": "bruno2@gmail.com",
+    "senha": "bruno2@gmail.com"
 }
 
 ###
+# logout a user
 # GET http://localhost:8080/logout
-# GET http://localhost:8080/health
-# GET http://localhost:8080/usuarios
-# Headers: Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1NjgxNTM2LCJleHAiOjE3NDU2ODUxMzZ9.OfsV_K0rf2ucFCCv4dHh7SJiapBgHxTQsv8Hht_cfO8
+# Content-Type: application/json
+# Headers: 
+#     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1Njg4Mzk2LCJleHAiOjE3NDU2OTE5OTZ9.n3AnAPWprU6nL2hiq5lvMLSE57QXq8bpn68hfYNTxuc
 
-GET http://localhost:8080/usuarios?search=bruno@gmail.com
+# list all users
+GET http://localhost:8080/usuarios
 Headers: 
-    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1NjgzODYyLCJleHAiOjE3NDU2ODc0NjJ9.2r2cHq7V5gCVq1079-Oc8z72n_asQ3kntDSfsoKED7c
+   Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1Njg4Mzk2LCJleHAiOjE3NDU2OTE5OTZ9.n3AnAPWprU6nL2hiq5lvMLSE57QXq8bpn68hfYNTxuc
+
+# list a user by ID or email
+# GET http://localhost:8080/usuarios?search=jose2@gmail.com
+# Headers: 
+#     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1Njg4Mzk2LCJleHAiOjE3NDU2OTE5OTZ9.n3AnAPWprU6nL2hiq5lvMLSE57QXq8bpn68hfYNTxuc
+
+# validate a token
 # GET http://localhost:8080/token-validate
 
 ###
-PUT http://localhost:8080/usuarios/15
+# Update a user by ID
+PUT http://localhost:8080/usuarios/16
 Content-Type: application/json
+Headers: 
+    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1Njg4Mzk2LCJleHAiOjE3NDU2OTE5OTZ9.n3AnAPWprU6nL2hiq5lvMLSE57QXq8bpn68hfYNTxuc
 
 {
     "id": 15,
-    "nome": "Bruno 2",
+    "nome": "Jose 2",
     "idade": 28,
-    "email": "bruno2@gmail.com",
+    "email": "jose2@gmail.com",
     "data_nascimento": "1997-02-28",
     "sexo": "Masculino"
 }
 
 ###
-DELETE http://localhost:8080/usuarios/15
+# Delete a user by ID
+DELETE http://localhost:8080/usuarios/14
+Headers: 
+    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1Njg4Mzk2LCJleHAiOjE3NDU2OTE5OTZ9.n3AnAPWprU6nL2hiq5lvMLSE57QXq8bpn68hfYNTxuc
