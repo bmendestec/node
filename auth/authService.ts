@@ -20,5 +20,5 @@ export async function loginUser(email: string, password: string, request: Fastif
     
     await redis.set(`user:${user.id}:token`, token, 'EX', 3600);
 
-    return reply.send({ token });
+    return reply.send({ token, user });
 }
