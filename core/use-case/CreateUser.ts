@@ -1,4 +1,4 @@
-import { User, CreateUserDependencies } from '../../types/User.js';
+import { User, CreateUserDependencies } from '../entities/User.js';
 
 export class CreateUser {   
 

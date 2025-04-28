@@ -1,4 +1,4 @@
-import { User } from "../types/User.js";
+import { User } from "../core/entities/User.js";
 
 export interface UserRepository {
  /**

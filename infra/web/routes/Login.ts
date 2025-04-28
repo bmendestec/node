@@ -8,4 +8,8 @@ export default async function loginRoutes(server: FastifyInstance) {
     server.get('/logout', async (request: FastifyRequest, reply: FastifyReply) => {
         return loginController(request, reply, 'logout')
     });
+
+    server.get('/validate-token', async (request: FastifyRequest, reply: FastifyReply) => {
+        return loginController(request, reply, 'validate-token')
+    });
 }

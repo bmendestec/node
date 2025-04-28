@@ -1,4 +1,4 @@
-import type { UserRepository } from "../ports/UserRepository.js";
+import type { UserRepository } from "../../ports/UserRepository.js";
 
 export interface User {
     id?: number;
