@@ -1,8 +1,8 @@
 import { RequestGenericInterface, FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
-import { UserRepositoryPostgres } from '../../../adapters/postgres/UserRepositoryPostgres.js';
 import { CreateUser } from '../../../core/use-case/CreateUser.js';
 import { User } from '../../../core/entities/User.js';
 import { authMiddleware } from '../../../auth/authMiddleware.js';
+import { UserRepository } from '../../../ports/UserRepository.js';
 
 interface getUsuariosQuery extends RequestGenericInterface {
     Querystring: {
@@ -12,8 +12,7 @@ interface getUsuariosQuery extends RequestGenericInterface {
     Body: User,
 }
 
-export default async function userRoutes(server: FastifyInstance): Promise<void> {
-    const userRepository = new UserRepositoryPostgres();    
+export default async function userRoutes(server: FastifyInstance, userRepository: UserRepository): Promise<void> {      
 
     // Rota pública: Criar um novo usuário
     server.post('/usuarios', async (request: FastifyRequest<{ Body: User }>, reply: FastifyReply) => {

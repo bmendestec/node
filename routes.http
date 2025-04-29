@@ -2,28 +2,28 @@
 # You can run this file using the REST Client extension in Visual Studio Code
 
 # Login a user
-# POST http://localhost:8080/login
-# Content-Type: application/json
-
-# {
-#     "email": "bruno@gmail.com",
-#     "senha": "bruno@gmail.com"
-# }
-
-# Create a new user
-POST http://localhost:8080/usuarios
+POST http://localhost:8080/login
 Content-Type: application/json
-Headers: 
-    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1Njg4Mzk2LCJleHAiOjE3NDU2OTE5OTZ9.n3AnAPWprU6nL2hiq5lvMLSE57QXq8bpn68hfYNTxuc
 
 {
-    "nome": "Bruno Paula Mendes",
-    "data_nascimento": "1997-02-28",
-    "idade": 28,
-    "sexo": "Masculino",
-    "email": "bruno22@gmail.com",
-    "senha": "bruno2@gmail.com"
+    "email": "bruno@gmail.com",
+    "senha": "bruno@gmail.com"
 }
+
+# Create a new user
+# POST http://localhost:8080/usuarios
+# Content-Type: application/json
+# Headers: 
+#     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1Njg4Mzk2LCJleHAiOjE3NDU2OTE5OTZ9.n3AnAPWprU6nL2hiq5lvMLSE57QXq8bpn68hfYNTxuc
+
+# {
+#     "nome": "Bruno Paula Mendes",
+#     "data_nascimento": "1997-02-28",
+#     "idade": 28,
+#     "sexo": "Masculino",
+#     "email": "bruno22@gmail.com",
+#     "senha": "bruno2@gmail.com"
+# }
 
 ###
 # logout a user

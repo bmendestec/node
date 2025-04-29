@@ -2,16 +2,18 @@ import fastify, { FastifyInstance, FastifyError, FastifyReply, FastifyRequest } 
 import cors from '@fastify/cors';
 import userRoutes from '../web/routes/Users.js';
 import loginRoutes from './routes/Login.js';
+import { UserRepositoryPostgres } from '../../adapters/postgres/UserRepositoryPostgres.js';
 
 const server: FastifyInstance = fastify();
+const userRepository = new UserRepositoryPostgres();
 
 await server.register(cors, {
     origin: 'http://localhost:5173',
     methods: ['GET', 'POST', 'PUT', 'DELETE']
 });
 
-await loginRoutes(server);
-await userRoutes(server);
+await loginRoutes(server, userRepository);
+await userRoutes(server, userRepository);
 
 server.setErrorHandler((error: FastifyError, request: FastifyRequest, reply: FastifyReply) => {
     console.error(error);
