@@ -1,26 +1,71 @@
-POST http://localhost:8080/usuarios
+# HTTP request for testing the API endpoints
+# You can run this file using the REST Client extension in Visual Studio Code
+
+# Login a user
+POST http://localhost:8080/login
 Content-Type: application/json
 
 {
-    "title": "Video node",
-    "description": "Video 01 description",
-    "duration": 60
+    "email": "bruno@gmail.com",
+    "senha": "bruno@gmail.com"
 }
 
-###
-# GET http://localhost:8080/health
-GET http://localhost:8080/usuarios 
-# GET http://localhost:8080/usuarios?search=node
+# Create a new user
+# POST http://localhost:8080/usuarios
+# Content-Type: application/json
+# Headers: 
+#     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1Njg4Mzk2LCJleHAiOjE3NDU2OTE5OTZ9.n3AnAPWprU6nL2hiq5lvMLSE57QXq8bpn68hfYNTxuc
+
+# {
+#     "nome": "Bruno Paula Mendes",
+#     "data_nascimento": "1997-02-28",
+#     "idade": 28,
+#     "sexo": "Masculino",
+#     "email": "bruno22@gmail.com",
+#     "senha": "bruno2@gmail.com"
+# }
 
 ###
-PUT http://localhost:8080/usuarios/3931e22e-ebcb-45c4-a8e9-2cc52d00bfd7
+# logout a user
+# GET http://localhost:8080/logout
+# Content-Type: application/json
+# Headers: 
+#     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1Njg4Mzk2LCJleHAiOjE3NDU2OTE5OTZ9.n3AnAPWprU6nL2hiq5lvMLSE57QXq8bpn68hfYNTxuc
+
+# list all users
+# GET http://localhost:8080/usuarios
+# Headers: 
+#    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1Njg4Mzk2LCJleHAiOjE3NDU2OTE5OTZ9.n3AnAPWprU6nL2hiq5lvMLSE57QXq8bpn68hfYNTxuc
+
+# list a user by ID or email
+# GET http://localhost:8080/usuarios?search=jose2@gmail.com
+# Headers: 
+#     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1Njg4Mzk2LCJleHAiOjE3NDU2OTE5OTZ9.n3AnAPWprU6nL2hiq5lvMLSE57QXq8bpn68hfYNTxuc
+
+# validate a token
+GET http://localhost:8080/validate-token
+Headers: 
+    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1Njg4Mzk2LCJleHAiOjE3NDU2OTE5OTZ9.n3AnAPWprU6nL2hiq5lvMLSE57QXq8bpn68hfYNTxuc
+
+###
+# Update a user by ID
+PUT http://localhost:8080/usuarios/19
 Content-Type: application/json
+Headers: 
+    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1Njg4Mzk2LCJleHAiOjE3NDU2OTE5OTZ9.n3AnAPWprU6nL2hiq5lvMLSE57QXq8bpn68hfYNTxuc
 
 {
-    "title": "Video Nodeeee",
-    "description": "Video 01 description",
-    "duration": 60
+    "id": 19,
+    "nome": "Bruno 22",
+    "idade": 28,
+    "email": "bruno22@gmail.com",
+    "data_nascimento": "1997-02-28",
+    "sexo": "Masculino",
+    "senha": "bruno22@gmail.com"
 }
 
 ###
-DELETE http://localhost:8080/usuarios/37ba28bd-8d72-4055-9929-f28c7a3f594d
+# Delete a user by ID
+DELETE http://localhost:8080/usuarios/14
+Headers: 
+    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1Njg4Mzk2LCJleHAiOjE3NDU2OTE5OTZ9.n3AnAPWprU6nL2hiq5lvMLSE57QXq8bpn68hfYNTxuc
