@@ -12,7 +12,7 @@ await server.register(cors, {
     methods: ['GET', 'POST', 'PUT', 'DELETE']
 });
 
-await loginRoutes(server);
+await loginRoutes(server, userRepository);
 await userRoutes(server, userRepository);
 
 server.setErrorHandler((error: FastifyError, request: FastifyRequest, reply: FastifyReply) => {

@@ -1,5 +1,4 @@
 import { RequestGenericInterface, FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
-import { UserRepositoryPostgres } from '../../../adapters/postgres/UserRepositoryPostgres.js';
 import { CreateUser } from '../../../core/use-case/CreateUser.js';
 import { User } from '../../../core/entities/User.js';
 import { authMiddleware } from '../../../auth/authMiddleware.js';

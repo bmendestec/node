@@ -2,13 +2,14 @@ import { FastifyReply, FastifyRequest } from 'fastify';
 import jwt from 'jsonwebtoken';
 import { loginUser } from './authService.js';
 import redis from '../infra/redis/index.js';
+import { UserRepository } from '../ports/UserRepository.js';
 
 
-export async function loginController(request: FastifyRequest, reply: FastifyReply, action: 'login' | 'logout' | 'validate-token') {
+export async function loginController(request: FastifyRequest, reply: FastifyReply, action: 'login' | 'logout' | 'validate-token', userRepository: UserRepository) {
     if (action === 'login') {
         const { email, senha } = request.body as { email: string; senha: string };
         
-        const token = await loginUser(email, senha, request, reply);
+        const token = await loginUser(email, senha, request, reply, userRepository);
         const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: number; email: string };
         await redis.set(`user:${decoded.id}:token`, token, 'EX', 3600);  
         
@@ -19,6 +20,7 @@ export async function loginController(request: FastifyRequest, reply: FastifyRep
             reply.headers({ 'Authorization': `Bearer ${storedToken}` });
             reply.send({ message: 'Login successful', storedToken });
         }
+
     } else if (action === 'logout') {
         const authHeader = request.headers['authorization'] as string;
         if (!authHeader) {
@@ -33,6 +35,7 @@ export async function loginController(request: FastifyRequest, reply: FastifyRep
         const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: number; email: string };
         await redis.del(`user:${decoded.id}:token`);
         reply.send({ message: 'Logged out successfully' });
+
     } else if (action === 'validate-token') {
         const authHeader = request.headers['authorization'] as string;
         if (!authHeader) {
@@ -56,5 +59,4 @@ export async function loginController(request: FastifyRequest, reply: FastifyRep
             return reply.status(401).send({ message: false, error: 'Invalid token' });
         }
     }
-
 }

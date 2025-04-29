@@ -1,13 +1,12 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import 'dotenv/config';
-import { UserRepositoryPostgres } from '../adapters/postgres/UserRepositoryPostgres.js';
 import redis from '../infra/redis/index.js';
 import { FastifyReply, FastifyRequest } from 'fastify';
+import { UserRepository } from '../ports/UserRepository.js';
 
-export async function loginUser(email: string, password: string, request: FastifyRequest, reply: FastifyReply): Promise<string> {
-
-    const userRepository = new UserRepositoryPostgres();
+export async function loginUser(email: string, password: string, request: FastifyRequest, reply: FastifyReply, userRepository: UserRepository): Promise<string> {
+    
     const user = await userRepository.findByEmail(email);
 
     if (!user || !(await bcrypt.compare(password, user.senha))) {
