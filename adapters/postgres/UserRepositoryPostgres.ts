@@ -21,7 +21,7 @@ export class UserRepositoryPostgres implements UserRepository {
         
         return search
         ? sql<User[]>`SELECT * FROM usuarios WHERE nome ILIKE ${sanitizedSearch} or email ILIKE ${sanitizedSearch} or sexo ILIKE ${sanitizedSearch}`
-        : sql<User[]>`SELECT * FROM usuarios`;
+        : sql<User[]>`SELECT * FROM usuarios order by nome`;
     }
 
     async edit(id: number, user: User): Promise<User> {
@@ -65,6 +65,19 @@ export class UserRepositoryPostgres implements UserRepository {
         }
         catch (error) { 
             console.error("Error finding user by email:", error);
+            throw new Error("Database error");
+        }
+    }
+    async findById(id: number): Promise<User | null> {
+        try {
+            const existingUser = await sql<User[]>`SELECT * FROM usuarios WHERE id = ${id}`;
+            if (!existingUser.length) {
+                return null;
+            }
+            return existingUser[0];
+        }
+        catch (error) { 
+            console.error("Error finding user by id:", error);
             throw new Error("Database error");
         }
     }
