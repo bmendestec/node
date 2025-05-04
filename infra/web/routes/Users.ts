@@ -3,6 +3,10 @@ import { CreateUser } from '../../../core/use-case/CreateUser.js';
 import { User } from '../../../core/entities/User.js';
 import { authMiddleware } from '../../../auth/authMiddleware.js';
 import { UserRepository } from '../../../ports/UserRepository.js';
+import { ListUser } from '../../../core/use-case/ListUser.js';
+import { EditUser } from '../../../core/use-case/EditUser.js';
+import { DeleteUser } from '../../../core/use-case/DeleteUser.js';
+import { FindUserById } from '../../../core/use-case/FindUserById.js';
 
 interface getUsuariosQuery extends RequestGenericInterface {
     Querystring: {
@@ -12,7 +16,7 @@ interface getUsuariosQuery extends RequestGenericInterface {
     Body: User,
 }
 
-export default async function userRoutes(server: FastifyInstance, userRepository: UserRepository): Promise<void> {      
+export default async function userRoutes(server: FastifyInstance, userRepository: UserRepository): Promise<void> {
 
     // Rota pública: Criar um novo usuário
     server.post('/usuarios', async (request: FastifyRequest<{ Body: User }>, reply: FastifyReply) => {
@@ -23,17 +27,26 @@ export default async function userRoutes(server: FastifyInstance, userRepository
 
     // Rotas protegidas: Listar, editar e deletar usuários
     server.get<getUsuariosQuery>('/usuarios', { preHandler: authMiddleware }, async (request, reply: FastifyReply) => {
-        const user = await userRepository.list(request.query.search || '');
-        return reply.send({ message: 'Você está autenticado', user });
+        const listUser = new ListUser(userRepository);
+        const users = await listUser.execute(request.query.search || '');
+        return reply.status(200).send(users);
     });
 
     server.put<getUsuariosQuery>('/usuarios/:id', { preHandler: authMiddleware }, async (request, reply: FastifyReply) => {
-        const user = await userRepository.edit(request.params.id, request.body);
+        const editUser = new EditUser(userRepository);
+        const user = await editUser.execute(request.params.id, request.body);
         return reply.status(200).send(user);
     });
 
     server.delete<getUsuariosQuery>('/usuarios/:id', { preHandler: authMiddleware }, async (request, reply: FastifyReply) => {
-        await userRepository.delete(request.params.id);
+        const deleteUser = new DeleteUser(userRepository);
+        await deleteUser.execute(request.params.id);
         return reply.status(204).send();
+    });
+
+    server.get<getUsuariosQuery>('/usuarios/:id', { preHandler: authMiddleware }, async (request, reply: FastifyReply) => {
+        const findUserById = new FindUserById(userRepository);
+        const user = await findUserById.execute(request.params.id);
+        return reply.send({ message: 'Você está autenticado', user });
     });
 }

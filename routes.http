@@ -7,7 +7,7 @@ Content-Type: application/json
 
 {
     "email": "bruno@gmail.com",
-    "senha": "bruno@gmail.com"
+    "senha": "123"
 }
 
 # Create a new user
