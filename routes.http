@@ -11,19 +11,37 @@
 # }
 
 # Create a new user
-POST http://localhost:8080/usuarios
+# POST http://localhost:8080/usuarios
+# Content-Type: application/json
+# Headers: 
+#     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NjYyNDkxLCJleHAiOjE3NDY2NjYwOTF9.nxWMnXaePaEOmxu9uZBNnslkFuUz6Ul_hwJogggIC8E
+
+# {
+#     "nome": "Bruno Paula Mendes",
+#     "data_nascimento": "1997-02-28",
+#     "idade": 28,
+#     "sexo": "Masculino",
+#     "email": "bruno22@gmail.com",
+#     "senha": "bruno2@gmail.com",
+#     "created_at": "2023-10-17T12:00:00Z"
+# }
+
+# Create a new task
+POST http://localhost:8080/tasks
 Content-Type: application/json
 Headers: 
-    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NDAzNzE5LCJleHAiOjE3NDY0MDczMTl9.ut-IMFwe8ZXfaRof57gPxtILwrmumVlKLn6JveIS_yA
+    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NjYyNDkxLCJleHAiOjE3NDY2NjYwOTF9.nxWMnXaePaEOmxu9uZBNnslkFuUz6Ul_hwJogggIC8E
 
 {
-    "nome": "Bruno Paula Mendes",
-    "data_nascimento": "1997-02-28",
-    "idade": 28,
-    "sexo": "Masculino",
-    "email": "bruno22@gmail.com",
-    "senha": "bruno2@gmail.com",
-    "created_at": "2023-10-17T12:00:00Z"
+    "title": "Tarefa teste 2",
+    "description": "loren ipsum dolor sit amet consectetur adipiscing elit",
+    "project_id": 2,
+    "status": null,
+    "priority": null,
+    "due_date": "2025-05-08T00:00:00.000Z",
+    "completed_at": "2023-10-17T15:00:00.000Z",
+    "created_at": "2025-05-07T05:58:16.589Z",
+    "updated_at": "2025-05-07T05:58:16.589Z"
 }
 
 ###
@@ -31,29 +49,33 @@ Headers:
 # GET http://localhost:8080/logout
 # Content-Type: application/json
 # Headers: 
-#     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NDAzNzE5LCJleHAiOjE3NDY0MDczMTl9.ut-IMFwe8ZXfaRof57gPxtILwrmumVlKLn6JveIS_yA
+#     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NjYyNDkxLCJleHAiOjE3NDY2NjYwOTF9.nxWMnXaePaEOmxu9uZBNnslkFuUz6Ul_hwJogggIC8E
 
 # list all users
-GET http://localhost:8080/usuarios
+# GET http://localhost:8080/usuarios
+# Headers: 
+#    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NjYyNDkxLCJleHAiOjE3NDY2NjYwOTF9.nxWMnXaePaEOmxu9uZBNnslkFuUz6Ul_hwJogggIC8E
+
+GET http://localhost:8080/tasks
 Headers: 
-   Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NDAzNzE5LCJleHAiOjE3NDY0MDczMTl9.ut-IMFwe8ZXfaRof57gPxtILwrmumVlKLn6JveIS_yA
+   Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NjYyNDkxLCJleHAiOjE3NDY2NjYwOTF9.nxWMnXaePaEOmxu9uZBNnslkFuUz6Ul_hwJogggIC8E
 
 # list a user by ID or email
 # GET http://localhost:8080/usuarios?search=jose2@gmail.com
 # Headers: 
-#     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NDAzNzE5LCJleHAiOjE3NDY0MDczMTl9.ut-IMFwe8ZXfaRof57gPxtILwrmumVlKLn6JveIS_yA
+#     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NjYyNDkxLCJleHAiOjE3NDY2NjYwOTF9.nxWMnXaePaEOmxu9uZBNnslkFuUz6Ul_hwJogggIC8E
 
 # validate a token
 GET http://localhost:8080/validate-token
 Headers: 
-    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NDAzNzE5LCJleHAiOjE3NDY0MDczMTl9.ut-IMFwe8ZXfaRof57gPxtILwrmumVlKLn6JveIS_yA
+    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NjYyNDkxLCJleHAiOjE3NDY2NjYwOTF9.nxWMnXaePaEOmxu9uZBNnslkFuUz6Ul_hwJogggIC8E
 
 ###
 # Update a user by ID
 PUT http://localhost:8080/usuarios/19
 Content-Type: application/json
 Headers: 
-    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NDAzNzE5LCJleHAiOjE3NDY0MDczMTl9.ut-IMFwe8ZXfaRof57gPxtILwrmumVlKLn6JveIS_yA
+    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NjYyNDkxLCJleHAiOjE3NDY2NjYwOTF9.nxWMnXaePaEOmxu9uZBNnslkFuUz6Ul_hwJogggIC8E
 
 {
     "id": 19,
@@ -69,4 +91,4 @@ Headers:
 # Delete a user by ID
 DELETE http://localhost:8080/usuarios/14
 Headers: 
-    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NDAzNzE5LCJleHAiOjE3NDY0MDczMTl9.ut-IMFwe8ZXfaRof57gPxtILwrmumVlKLn6JveIS_yA
+    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NjYyNDkxLCJleHAiOjE3NDY2NjYwOTF9.nxWMnXaePaEOmxu9uZBNnslkFuUz6Ul_hwJogggIC8E

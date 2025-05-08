@@ -1,4 +1,4 @@
-import { User, CreateUserDependencies } from '../entities/User.js';
+import { User, CreateUserDependencies } from '../../entities/User.js';
 
 export class ListUser {
     constructor(private userRepository: CreateUserDependencies['userRepository']) {

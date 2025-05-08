@@ -1,12 +1,12 @@
 import { RequestGenericInterface, FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
-import { CreateUser } from '../../../core/use-case/CreateUser.js';
+import { CreateUser } from '../../../core/use-case/user/CreateUser.js';
 import { User } from '../../../core/entities/User.js';
 import { authMiddleware } from '../../../auth/authMiddleware.js';
 import { UserRepository } from '../../../ports/UserRepository.js';
-import { ListUser } from '../../../core/use-case/ListUser.js';
-import { EditUser } from '../../../core/use-case/EditUser.js';
-import { DeleteUser } from '../../../core/use-case/DeleteUser.js';
-import { FindUserById } from '../../../core/use-case/FindUserById.js';
+import { ListUser } from '../../../core/use-case/user/ListUser.js';
+import { EditUser } from '../../../core/use-case/user/EditUser.js';
+import { DeleteUser } from '../../../core/use-case/user/DeleteUser.js';
+import { FindUserById } from '../../../core/use-case/user/FindUserById.js';
 
 interface getUsuariosQuery extends RequestGenericInterface {
     Querystring: {
@@ -50,6 +50,6 @@ export default async function userRoutes(server: FastifyInstance, userRepository
     server.get<getUsuariosQuery>('/usuarios/:id', { preHandler: authMiddleware }, async (request, reply: FastifyReply) => {
         const findUserById = new FindUserById(userRepository);
         const user = await findUserById.execute(request.params.id);
-        return reply.send({ message: 'Você está autenticado', user });
+        return reply.status(200).send({ message: 'Você está autenticado', user });
     });
 }

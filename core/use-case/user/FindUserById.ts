@@ -1,17 +1,17 @@
-import { User, CreateUserDependencies } from '../entities/User.js';
+import { CreateUserDependencies, User } from "../../entities/User";
 
-export class EditUser {
+export class FindUserById {
     constructor(private userRepository: CreateUserDependencies['userRepository']) {
         this.userRepository = userRepository;
     }
 
-    async execute(id: number, user: User): Promise<User> {
+    async execute(id: number): Promise<User> {
         if (!id) {
             throw new Error('Invalid user ID');
         }
 
-        const iUserExists = await this.userRepository.edit(id, user);
-        if (!iUserExists) {
+        const user = await this.userRepository.findById(id);
+        if (!user) {
             throw new Error('User not found');
         }
         return user;
