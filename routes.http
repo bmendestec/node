@@ -2,19 +2,19 @@
 # You can run this file using the REST Client extension in Visual Studio Code
 
 # Login a user
-POST http://localhost:8080/login
-Content-Type: application/json
+# POST http://localhost:8080/login
+# Content-Type: application/json
 
-{
-    "email": "bruno@gmail.com",
-    "senha": "123"
-}
+# {
+#     "email": "bruno@gmail.com",
+#     "senha": "123"
+# }
 
 # Create a new user
 # POST http://localhost:8080/usuarios
 # Content-Type: application/json
 # Headers: 
-#     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1Njg4Mzk2LCJleHAiOjE3NDU2OTE5OTZ9.n3AnAPWprU6nL2hiq5lvMLSE57QXq8bpn68hfYNTxuc
+#     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NjYyNDkxLCJleHAiOjE3NDY2NjYwOTF9.nxWMnXaePaEOmxu9uZBNnslkFuUz6Ul_hwJogggIC8E
 
 # {
 #     "nome": "Bruno Paula Mendes",
@@ -22,50 +22,94 @@ Content-Type: application/json
 #     "idade": 28,
 #     "sexo": "Masculino",
 #     "email": "bruno22@gmail.com",
-#     "senha": "bruno2@gmail.com"
+#     "senha": "bruno2@gmail.com",
+#     "created_at": "2023-10-17T12:00:00Z"
 # }
+
+# Create a new task
+POST http://localhost:8080/tasks
+Content-Type: application/json
+Headers: 
+    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NjYyNDkxLCJleHAiOjE3NDY2NjYwOTF9.nxWMnXaePaEOmxu9uZBNnslkFuUz6Ul_hwJogggIC8E
+
+{
+    "title": "Tarefa teste 2",
+    "project_id": 2,
+    "description": "loren ipsum dolor sit amet consectetur adipiscing elit",
+    "status": "Pending",
+    "priority": "Low",
+    "due_date": "2025-05-08T00:00:00.000Z",
+    "completed_at": "2025-05-08T00:00:00.000Z",
+    "created_at": "2025-05-08T00:00:00.000Z",
+    "updated_at": "2025-05-08T00:00:00.000Z"
+}
 
 ###
 # logout a user
 # GET http://localhost:8080/logout
 # Content-Type: application/json
 # Headers: 
-#     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1Njg4Mzk2LCJleHAiOjE3NDU2OTE5OTZ9.n3AnAPWprU6nL2hiq5lvMLSE57QXq8bpn68hfYNTxuc
+#     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NjYyNDkxLCJleHAiOjE3NDY2NjYwOTF9.nxWMnXaePaEOmxu9uZBNnslkFuUz6Ul_hwJogggIC8E
 
 # list all users
 # GET http://localhost:8080/usuarios
 # Headers: 
-#    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1Njg4Mzk2LCJleHAiOjE3NDU2OTE5OTZ9.n3AnAPWprU6nL2hiq5lvMLSE57QXq8bpn68hfYNTxuc
+#    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NjYyNDkxLCJleHAiOjE3NDY2NjYwOTF9.nxWMnXaePaEOmxu9uZBNnslkFuUz6Ul_hwJogggIC8E
+
+GET http://localhost:8080/tasks
+Headers: 
+   Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NjYyNDkxLCJleHAiOjE3NDY2NjYwOTF9.nxWMnXaePaEOmxu9uZBNnslkFuUz6Ul_hwJogggIC8E
 
 # list a user by ID or email
 # GET http://localhost:8080/usuarios?search=jose2@gmail.com
 # Headers: 
-#     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1Njg4Mzk2LCJleHAiOjE3NDU2OTE5OTZ9.n3AnAPWprU6nL2hiq5lvMLSE57QXq8bpn68hfYNTxuc
+#     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NjYyNDkxLCJleHAiOjE3NDY2NjYwOTF9.nxWMnXaePaEOmxu9uZBNnslkFuUz6Ul_hwJogggIC8E
 
 # validate a token
 GET http://localhost:8080/validate-token
 Headers: 
-    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1Njg4Mzk2LCJleHAiOjE3NDU2OTE5OTZ9.n3AnAPWprU6nL2hiq5lvMLSE57QXq8bpn68hfYNTxuc
+    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NjYyNDkxLCJleHAiOjE3NDY2NjYwOTF9.nxWMnXaePaEOmxu9uZBNnslkFuUz6Ul_hwJogggIC8E
 
 ###
 # Update a user by ID
-PUT http://localhost:8080/usuarios/19
+# PUT http://localhost:8080/usuarios/19
+# Content-Type: application/json
+# Headers: 
+#     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NjYyNDkxLCJleHAiOjE3NDY2NjYwOTF9.nxWMnXaePaEOmxu9uZBNnslkFuUz6Ul_hwJogggIC8E
+
+# {
+#     "id": 19,
+#     "nome": "Bruno 22",
+#     "idade": 28,
+#     "email": "bruno22@gmail.com",
+#     "data_nascimento": "1997-02-28",
+#     "sexo": "Masculino",
+#     "senha": "bruno22@gmail.com"
+# }
+
+PUT http://localhost:8080/tasks/3
 Content-Type: application/json
 Headers: 
-    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1Njg4Mzk2LCJleHAiOjE3NDU2OTE5OTZ9.n3AnAPWprU6nL2hiq5lvMLSE57QXq8bpn68hfYNTxuc
+    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NjYyNDkxLCJleHAiOjE3NDY2NjYwOTF9.nxWMnXaePaEOmxu9uZBNnslkFuUz6Ul_hwJogggIC8E
 
 {
-    "id": 19,
-    "nome": "Bruno 22",
-    "idade": 28,
-    "email": "bruno22@gmail.com",
-    "data_nascimento": "1997-02-28",
-    "sexo": "Masculino",
-    "senha": "bruno22@gmail.com"
+    "title": "Outro teste",
+    "project_id": 2,
+    "description": "loren ipsum dolor sit amet consectetur adipiscing elit",
+    "status": "Pending",
+    "priority": "Low",
+    "due_date": "2025-05-08T00:00:00.000Z",
+    "completed_at": "2025-05-08T00:00:00.000Z",
+    "created_at": "2025-05-08T00:00:00.000Z",
+    "updated_at": "2025-05-08T00:00:00.000Z"
 }
 
 ###
 # Delete a user by ID
-DELETE http://localhost:8080/usuarios/14
+# DELETE http://localhost:8080/usuarios/14
+# Headers: 
+#     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NjYyNDkxLCJleHAiOjE3NDY2NjYwOTF9.nxWMnXaePaEOmxu9uZBNnslkFuUz6Ul_hwJogggIC8E
+
+DELETE http://localhost:8080/tasks/3
 Headers: 
-    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ1Njg4Mzk2LCJleHAiOjE3NDU2OTE5OTZ9.n3AnAPWprU6nL2hiq5lvMLSE57QXq8bpn68hfYNTxuc
+    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2NjYyNDkxLCJleHAiOjE3NDY2NjYwOTF9.nxWMnXaePaEOmxu9uZBNnslkFuUz6Ul_hwJogggIC8E

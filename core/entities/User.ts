@@ -8,6 +8,11 @@ export interface User {
     sexo: string;
     email: string;
     senha: string;
+    active?: string;
+    created_at?: Date;
+    updated_at?: Date;
+    created_by?: string;
+    updated_by?: string;
 }
 
 export interface CreateUserDependencies {

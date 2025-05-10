@@ -34,7 +34,7 @@ export async function loginController(request: FastifyRequest, reply: FastifyRep
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: number; email: string };
         await redis.del(`user:${decoded.id}:token`);
-        reply.send({ message: 'Logged out successfully' });
+        reply.send({ message: 'Logged out successfully', decoded: `${decoded.id}` });
 
     } else if (action === 'validate-token') {
         const authHeader = request.headers['authorization'] as string;
