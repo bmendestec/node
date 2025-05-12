@@ -50,6 +50,13 @@ export default async function userRoutes(server: FastifyInstance, userRepository
     server.get<getUsuariosQuery>('/usuarios/:id', { preHandler: authMiddleware }, async (request, reply: FastifyReply) => {
         const findUserById = new FindUserById(userRepository);
         const user = await findUserById.execute(request.params.id);
-        return reply.status(200).send({ message: 'Você está autenticado', user });
+        return reply.status(200).send({ user: {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            birth_date: user.birth_date,
+            age: user.age,
+            gender: user.gender
+        } });
     });
 }
