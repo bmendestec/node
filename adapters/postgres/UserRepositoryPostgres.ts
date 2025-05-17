@@ -7,12 +7,12 @@ export class UserRepositoryPostgres implements UserRepository {
 
     async create(user: User): Promise<User> {
         try {
-            const { nome, data_nascimento, idade, sexo, email, senha } = user;
-            const hashedPassword = await bcrypt.hash(senha, 10);
+            const { name, birth_date, age, gender, email, password } = user;
+            const hashedPassword = await bcrypt.hash(password, 10);
 
             await sql`
-               insert into usuarios (nome, data_nascimento, idade, sexo, email, senha, created_by)
-               values (${nome}, ${data_nascimento}, ${idade}, ${sexo}, ${email}, ${hashedPassword}, ${user.nome})
+               insert into usuarios (name, birth_date, age, gender, email, password, created_by)
+               values (${name}, ${birth_date}, ${age}, ${gender}, ${email}, ${hashedPassword}, ${user.name})
            `;
 
             console.log("User created successfully:", user);
@@ -33,25 +33,25 @@ export class UserRepositoryPostgres implements UserRepository {
         const sanitizedSearch = `%${search}%`;
 
         return search
-            ? sql<User[]>`SELECT * FROM usuarios WHERE nome ILIKE ${sanitizedSearch} or email ILIKE ${sanitizedSearch} or sexo ILIKE ${sanitizedSearch}`
-            : sql<User[]>`SELECT * FROM usuarios where active = 'S' order by nome`;
+            ? sql<User[]>`SELECT * FROM usuarios WHERE name ILIKE ${sanitizedSearch} or email ILIKE ${sanitizedSearch} or gender ILIKE ${sanitizedSearch}`
+            : sql<User[]>`SELECT * FROM usuarios where active = 'S' order by name`;
     }
 
     async edit(id: number, user: User): Promise<User> {
         const existingUser = await sql<User[]>`SELECT * FROM usuarios WHERE id = ${id}`;
-        const { nome, data_nascimento, idade, sexo, email } = user;
+        const { name, birth_date, age, gender, email } = user;
         if (!existingUser.length) {
             throw new Error("User not found");
         };
         await sql`
             update usuarios
-            set nome = ${nome}, 
-                data_nascimento = ${data_nascimento}, 
-                idade = ${idade}, 
-                sexo = ${sexo}, 
+            set name = ${name}, 
+                birth_date = ${birth_date}, 
+                age = ${age}, 
+                gender = ${gender}, 
                 email = ${email},
                 updated_at = now(),
-                updated_by = ${nome}
+                updated_by = ${name}
             where id = ${id}
         `;
 

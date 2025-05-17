@@ -7,13 +7,13 @@ import { UserRepository } from '../ports/UserRepository.js';
 
 export async function loginController(request: FastifyRequest, reply: FastifyReply, action: 'login' | 'logout' | 'validate-token', userRepository: UserRepository) {
     if (action === 'login') {
-        const { email, senha } = request.body as { email: string; senha: string };
+        const { email, password } = request.body as { email: string; password: string };
         
-        const token = await loginUser(email, senha, request, reply, userRepository);
+        const token = await loginUser(email, password, request, reply, userRepository);
         const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: number; email: string };
         await redis.set(`user:${decoded.id}:token`, token, 'EX', 3600);  
         
-        const storedToken = await redis.get(`user:${decoded.id}:token`);
+        const storedToken = await redis.get(`token`);
         if (storedToken !== token) {
             return reply.status(401).send({ message: 'Unauthorized' });
         } else {

@@ -2,12 +2,12 @@ import type { UserRepository } from "../../ports/UserRepository.js";
 
 export interface User {
     id?: number;
-    nome: string;
-    data_nascimento: Date;
-    idade: number;
-    sexo: string;
+    name: string;
+    birth_date: Date;
+    age: number;
+    gender: string;
     email: string;
-    senha: string;
+    password: string;
     active?: string;
     created_at?: Date;
     updated_at?: Date;

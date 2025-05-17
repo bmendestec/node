@@ -9,7 +9,7 @@ export async function loginUser(email: string, password: string, request: Fastif
     
     const user = await userRepository.findByEmail(email);
 
-    if (!user || !(await bcrypt.compare(password, user.senha))) {
+    if (!user || !(await bcrypt.compare(password, user.password))) {
         throw new Error('Invalid credentials');
     }
 
