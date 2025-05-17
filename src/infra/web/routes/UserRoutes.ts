@@ -22,8 +22,7 @@ export default async function userRoutes(server: FastifyInstance, userRepository
     server.post('/usuarios', async (request: FastifyRequest<{ Body: User }>, reply: FastifyReply) => {
         const createUser = new CreateUser(userRepository);
         const user = await createUser.execute(request.body);
-        console.log('Reply:', reply);
-        console.log('User created:', user);
+
         return reply.status(201).send(user);
     });
 
@@ -38,12 +37,14 @@ export default async function userRoutes(server: FastifyInstance, userRepository
     server.put<getUsuariosQuery>('/usuarios/:id', { preHandler: authMiddleware }, async (request, reply: FastifyReply) => {
         const editUser = new EditUser(userRepository);
         const user = await editUser.execute(request.params.id, request.body);
+
         return reply.status(200).send(user);
     });
 
     server.delete<getUsuariosQuery>('/usuarios/:id', { preHandler: authMiddleware }, async (request, reply: FastifyReply) => {
         const deleteUser = new DeleteUser(userRepository);
         await deleteUser.execute(request.params.id);
+        
         return reply.status(204).send();
     });
 

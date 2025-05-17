@@ -7,7 +7,7 @@ Content-Type: application/json
 
 {
     "email": "bruno@gmail.com",
-    "senha": "123"
+    "password": "123"
 }
 
 # Create a new user
@@ -67,9 +67,9 @@ Content-Type: application/json
 #     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2OTIxMTc4LCJleHAiOjE3NDY5MjQ3Nzh9.P4LDMMIm7fA0OodQ_J3n6NrMbZHN3cwJ9ISbZIQslHI
 
 # list a task by ID
-GET http://localhost:8080/tasks/9
+GET http://localhost:8080/tasks
 Headers: 
-   Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ2OTIxMTc4LCJleHAiOjE3NDY5MjQ3Nzh9.P4LDMMIm7fA0OodQ_J3n6NrMbZHN3cwJ9ISbZIQslHI
+   Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImVtYWlsIjoiYnJ1bm9AZ21haWwuY29tIiwiaWF0IjoxNzQ3NTI0MzU5LCJleHAiOjE3NDc1Mjc5NTl9.o6WzqD4i9rCvGCdMSd5rzgDwCdil_vpwQ5Kg0QlUUJQ
 
 
 # validate a token

@@ -8,7 +8,7 @@ export class CreateUser {
 
     async execute(userData: User): Promise<User> {
 
-        if (!userData.name || !userData.email || !userData.password || !userData.active || !userData.created_at || !userData.created_by ) {
+        if (!userData.name || !userData.email || !userData.password ) {
             throw new Error('Invalid user data');
         }
         
