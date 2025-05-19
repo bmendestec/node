@@ -1,4 +1,4 @@
-import { FastifyInstance, FastifyReply, FastifyRequest, RequestGenericInterface } from 'fastify';
+import { FastifyInstance, FastifyPluginOptions, FastifyReply, FastifyRequest, RequestGenericInterface } from 'fastify';
 import { CreateTask } from '../../../app/tasks/CreateTask.js';
 import { EditTask } from '../../../app/tasks/EditTask.js';
 import { TaskRepository } from '../../../domain/repositories/TaskRepository.js';
@@ -8,6 +8,9 @@ import { FindTaskById } from '../../../app/tasks/FindTaskById.js';
 import { DeleteTask } from '../../../app/tasks/DeleteTask.js';
 import { ListTask } from '../../../app/tasks/ListTask.js';
 
+interface TasksRoutesOptions extends FastifyPluginOptions {
+    taskRepository: TaskRepository;
+}
 interface getTasksQuery extends RequestGenericInterface {
     Querystring: {
         search?: string;
@@ -16,7 +19,9 @@ interface getTasksQuery extends RequestGenericInterface {
     Body: Task,
 }
 
-export default async function tasksRoutes(server: FastifyInstance, taskRepository: TaskRepository): Promise<void> {
+export default async function tasksRoutes(server: FastifyInstance, options: TasksRoutesOptions): Promise<void> {
+    const { taskRepository } = options;
+    
     server.post<getTasksQuery>('/tasks', { preHandler: authMiddleware }, async (request: FastifyRequest<{ Body: Task }>, reply: FastifyReply) => {
         const createTask = new CreateTask(taskRepository);
         const tasks = await createTask.execute(request.body);

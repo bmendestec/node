@@ -13,7 +13,7 @@ export async function loginController(request: FastifyRequest, reply: FastifyRep
         const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: number; email: string };
         await redis.set(`user:${decoded.id}:token`, token, 'EX', 3600);  
         
-        const storedToken = await redis.get(`token`);
+        const storedToken = await redis.get(`user:${decoded.id}:token`);
         if (storedToken !== token) {
             return reply.status(401).send({ message: 'Unauthorized' });
         } else {
@@ -53,7 +53,7 @@ export async function loginController(request: FastifyRequest, reply: FastifyRep
             if (storedToken !== token) {
                 return reply.status(401).send({ message: 'Unauthorized' });
             } else {
-                reply.send({ message: true, decoded });
+                reply.send({ message: true });
             }
         } catch (error) {
             return reply.status(401).send({ message: false, error: 'Invalid token' });

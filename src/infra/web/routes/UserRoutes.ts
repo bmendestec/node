@@ -1,4 +1,4 @@
-import { RequestGenericInterface, FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
+import { RequestGenericInterface, FastifyInstance, FastifyReply, FastifyRequest, FastifyPluginOptions } from 'fastify';
 import { CreateUser } from '../../../app/user/CreateUser.js';
 import { User } from '../../../domain/entities/User.js';
 import { authMiddleware } from '../../../auth/authMiddleware.js';
@@ -8,6 +8,9 @@ import { EditUser } from '../../../app/user/EditUser.js';
 import { DeleteUser } from '../../../app/user/DeleteUser.js';
 import { FindUserById } from '../../../app/user/FindUserById.js';
 
+interface userRepositoryOption extends FastifyPluginOptions {
+    userRepository: UserRepository;
+}
 interface getUsuariosQuery extends RequestGenericInterface {
     Querystring: {
         search?: string;
@@ -16,7 +19,8 @@ interface getUsuariosQuery extends RequestGenericInterface {
     Body: User,
 }
 
-export default async function userRoutes(server: FastifyInstance, userRepository: UserRepository): Promise<void> {
+export default async function userRoutes(server: FastifyInstance, options: userRepositoryOption): Promise<void> {
+    const { userRepository } = options;
 
     // Rota pública: Criar um novo usuário
     server.post('/usuarios', async (request: FastifyRequest<{ Body: User }>, reply: FastifyReply) => {

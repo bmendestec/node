@@ -15,9 +15,9 @@ await server.register(cors, {
     methods: ['GET', 'POST', 'PUT', 'DELETE']
 });
 
-await loginRoutes(server, userRepository);
-await userRoutes(server, userRepository);
-await tasksRoutes(server, taskRepository);
+await loginRoutes(server, { userRepository });
+await userRoutes(server, { userRepository });
+await tasksRoutes(server, { taskRepository });
 
 server.setErrorHandler((error: FastifyError, request: FastifyRequest, reply: FastifyReply) => {
     console.error(error);
