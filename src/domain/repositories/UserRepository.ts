@@ -9,7 +9,7 @@ export interface UserRepository {
     create(user: User): Promise<User>;
 
     /**
-     * Lista os usuários, com opção de busca por nome, email ou sexo.
+     * Lista os usuários, com opção de busca por nome ou email.
      * @param search - Termo de busca (opcional).
      * @returns Lista de usuários.
      * */

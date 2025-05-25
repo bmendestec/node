@@ -1,62 +1,58 @@
 import { FastifyReply, FastifyRequest } from 'fastify';
 import jwt from 'jsonwebtoken';
-import { loginUser } from './authService.js';
+import bcrypt from 'bcrypt';
 import redis from '../infra/redis/index.js';
 import { UserRepository } from '../domain/repositories/UserRepository.js';
 
 
-export async function loginController(request: FastifyRequest, reply: FastifyReply, action: 'login' | 'logout' | 'validate-token', userRepository: UserRepository) {
-    if (action === 'login') {
-        const { email, password } = request.body as { email: string; password: string };
-        
-        const token = await loginUser(email, password, request, reply, userRepository);
-        const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: number; email: string };
-        await redis.set(`user:${decoded.id}:token`, token, 'EX', 3600);  
-        
-        const storedToken = await redis.get(`user:${decoded.id}:token`);
-        if (storedToken !== token) {
-            return reply.status(401).send({ message: 'Unauthorized' });
-        } else {
-            reply.headers({ 'Authorization': `Bearer ${storedToken}` });
-            reply.send({ message: 'Login successful', storedToken });
-        }
+export class AuthController {
+    private userRepository: UserRepository;
 
-    } else if (action === 'logout') {
-        const authHeader = request.headers['authorization'] as string;
-        if (!authHeader) {
-            return reply.status(401).send({ message: 'Authorization header is missing' });
-        }
+    constructor(userRepository: UserRepository) {
+        this.userRepository = userRepository;
+    }
 
-        const token = authHeader.split(' ')[1];
-        if (!token) {
-            return reply.status(401).send({ message: 'Token is missing' });
-        }
-
-        const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: number; email: string };
-        await redis.del(`user:${decoded.id}:token`);
-        reply.send({ message: 'Logged out successfully', decoded: `${decoded.id}` });
-
-    } else if (action === 'validate-token') {
-        const authHeader = request.headers['authorization'] as string;
-        if (!authHeader) {
-            return reply.status(401).send({ message: 'Authorization header is missing' });
-        }
-
-        const token = authHeader.split(' ')[1];
-        if (!token) {
-            return reply.status(401).send({ message: 'Token is missing' });
-        }
-
+    async login(email: string, password: string): Promise<String | undefined> {
         try {
-            const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: number; email: string };
-            const storedToken = await redis.get(`user:${decoded.id}:token`);
-            if (storedToken !== token) {
-                return reply.status(401).send({ message: 'Unauthorized' });
-            } else {
-                reply.send({ message: true });
+            const user = await this.userRepository.findByEmail(email);            
+            if (!user || !(await bcrypt.compare(password, user.password))) {
+                return 'Invalid credential';
             }
-        } catch (error) {
-            return reply.status(401).send({ message: false, error: 'Invalid token' });
+            const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET!, {
+                expiresIn: '1h',
+            });
+
+            const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: number };
+            await redis.set(`user:${decoded.id}:token`, token, 'EX', 3600);
+            return token;
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
+    async validateToken(token: string): Promise<object | undefined> {
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: number };
+            const storedToken = await redis.get(`user:${decoded.id}:token`);            
+            if (!storedToken && storedToken !== token) {
+                console.log('false');
+                return { message: false };
+            }
+
+            return { message: true }
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
+    async logout(token: string): Promise<void> {
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: number };
+            console.log('User deleted: ', decoded.id);
+            await redis.del(`user:${decoded.id}:token`);
+
+        } catch (e) {
+            console.log(e);
         }
     }
 }

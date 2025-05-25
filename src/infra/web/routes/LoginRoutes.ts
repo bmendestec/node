@@ -1,37 +1,52 @@
-import { FastifyInstance, FastifyReply, FastifyRequest,FastifyPluginOptions } from 'fastify';
-import { loginController } from '../../../auth/authController.js';
+import { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
 import { UserRepository } from '../../../domain/repositories/UserRepository.js';
-import jwt from 'jsonwebtoken';
+import { AuthController } from '../../../auth/authController.js';
+import { log } from 'console';
 
-interface LoginRoutesOptions extends FastifyPluginOptions {
+export class LoginRoutes {
     userRepository: UserRepository;
-}
+    server: FastifyInstance;
 
-export default async function loginRoutes(server: FastifyInstance,  options: LoginRoutesOptions): Promise<void> {
-    const { userRepository } = options;
-    
-    server.post('/login', async (request: FastifyRequest, reply: FastifyReply) => {
-        try {
-            const { email, password } = request.body as { email: string; password: string };
-            const user = await userRepository.findByEmail(email);
-    
-            if (!user || password !== user.password) {
-                return reply.status(401).send({ message: "Invalid credentials" });
+    constructor(userRepository: UserRepository, server: FastifyInstance) {
+        this.userRepository = userRepository;
+        this.server = server;
+    }
+
+    async execute() {
+        const loginController = new AuthController(this.userRepository);
+        this.server.post('/login', async (request: FastifyRequest, reply: FastifyReply) => {
+            try {
+                const { email, password } = request.body as { email: string; password: string };
+                const token = await loginController.login(email, password);
+                reply.headers({ 'Authorization': `Bearer ${token}` });
+                reply.status(200).send({ token });
+            } catch (error) {
+                console.error(error);
+                return reply.status(500).send({ message: "Internal Server Error" });
             }
-    
-            const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET!);
-            return reply.status(200).send({ token });
-        } catch (error) {
-            console.error(error);
-            return reply.status(500).send({ message: "Internal Server Error" });
-        }
-        // return loginController(request, reply, 'login', userRepository)
-    });
-    server.get('/logout', async (request: FastifyRequest, reply: FastifyReply) => {
-        return loginController(request, reply, 'logout', userRepository)
-    });
+        });
 
-    server.get('/validate-token', async (request: FastifyRequest, reply: FastifyReply) => {
-        return loginController(request, reply, 'validate-token', userRepository)
-    });
+        this.server.get('/logout', async (request: FastifyRequest, reply: FastifyReply) => {
+            const authHeader = request.headers['authorization'];
+            if (!authHeader) {
+                return reply.status(401).send({ message: 'Authorization header is missing' });
+            }
+            const token = authHeader.split(' ')[1];
+            await loginController.logout(token);
+
+            reply.send({ message: 'Logged out successfully' });
+        });
+
+        this.server.get('/validate-token', async (request: FastifyRequest, reply: FastifyReply) => {
+            const authHeader = request.headers['authorization'] as string;
+            if (!authHeader) {
+                return reply.status(401).send({ message: 'Authorization header is missing' });
+            }
+
+            const token = authHeader.split(' ')[1];
+            const response = await loginController.validateToken(token);
+            
+            reply.send(response);
+        });
+    }
 }

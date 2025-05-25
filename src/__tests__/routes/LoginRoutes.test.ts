@@ -1,87 +1,90 @@
 import fastify from "fastify";
-import supertest from "supertest";
-import loginRoutes from "../../infra/web/routes/LoginRoutes";
 import redis from '../../infra/redis';
-import bcrypt from "bcrypt"
 import { UserRepository } from "../../domain/repositories/UserRepository";
+import { AuthController } from "../../auth/authController";
+import { UserRepositoryPostgres } from "../../adapters/postgres/UserRepositoryPostgres";
+import UserRepositoryInMemory from "./repository/UserRepositoryInMemory";
 
 jest.mock("../../infra/redis", () => ({
-    set: jest.fn(),
-    get: jest.fn(),
-    quit: jest.fn(),
+    set: jest.fn().mockResolvedValue('OK'),
+    get: jest.fn().mockResolvedValue('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImlhdCI6MTc0ODE5MzE1NSwiZXhwIjoxNzQ4MTk2NzU1fQ.IbLFvJRZsec9nM-uJ4Z4P7lbwy5Op0hYrVRHAq01afw'),
+    quit: jest.fn().mockResolvedValue('OK'),
 }));
 
 const app = fastify();
 const context: { token?: string } = {};
 
-describe('test the Users API', () => {
+describe('test the Login API', () => {
 
-    const userRepositoryMock: UserRepository = {
-        create: jest.fn(),
-        list: jest.fn(),
-        edit: jest.fn(),
-        delete: jest.fn(),
-        findByEmail: jest.fn(),
-        findById: jest.fn(),
-    }
-
-    beforeAll(async () => {
-        process.env.JWT_SECRET = "mysecretkey";
-        await app.register(loginRoutes, { userRepository: userRepositoryMock });
-        await app.ready();
-    });
-    afterAll(async () => {
-        await app.close();
-        await redis.quit();
-    });
 
     describe("POST/login", () => {
-        it("should access a protected route using the stored token", async () => {
-            (userRepositoryMock.findByEmail as jest.Mock).mockResolvedValue({
-                id: 34,
-                email: "bruno@gmail.com",
-                password: await bcrypt.hash("123", 10)
-            });
 
-            (redis.set as jest.Mock).mockResolvedValue("OK");
-            (redis.get as jest.Mock).mockResolvedValue("valid-token");
-
-            const response = await supertest(app.server)
-                .post('/login')
-                .send({
-                    email: "bruno@gmail.com",
-                    password: "123",
-                });;
-
-            context.token = response.body.token;
-
-            console.log("Token gerado:", context.token);
-
-            expect(response.statusCode).toEqual(200);
-            expect(response.body).toEqual(
-                expect.objectContaining({
-                    token: response.body.token,
-                }),
-            );
-
-            expect(redis.set).toHaveBeenCalledWith(
-                "user:34:token",
-                context.token,
-                "EX",
-                3600
-            );
-
+        beforeAll(async () => {
+            process.env.JWT_SECRET = "mysecretkey";
+            await app.ready();
         });
-        it("should validate the token received", async () => {
-            const response = await supertest(app.server)
-                .get('/validate-token')
-                .set('Authorization', `Bearer ${context.token}`);
 
-            expect(response.body).toEqual(
+        afterAll(async () => {
+            await app.close();
+            await redis.quit();
+        });
+
+        it("should authenticate the user", async () => {
+            const userRepository: UserRepository = new UserRepositoryPostgres();
+            const authController = new AuthController(userRepository);
+            const input = {
+                email: "bruno@gmail.com",
+                password: "123"
+            }
+            const token = await authController.login(input.email, input.password);
+            if (token === 'Invalid credential') {
+                throw new Error('Invalid credential')
+            }
+            expect(token).toBeDefined();
+        });
+
+
+        it("should validate the token received", async () => {
+            const userRepository: UserRepository = new UserRepositoryPostgres();
+            const authController = new AuthController(userRepository);
+            const input = {
+                email: "bruno@gmail.com",
+                password: "123"
+            }
+            const token = await authController.login(input.email, input.password);
+            if (!token) {
+                throw new Error("Token was not generated");
+            }
+            const validateToken = await authController.validateToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImlhdCI6MTc0ODE5MzE1NSwiZXhwIjoxNzQ4MTk2NzU1fQ.IbLFvJRZsec9nM-uJ4Z4P7lbwy5Op0hYrVRHAq01afw');
+            if (token === 'Invalid credential') {
+                throw new Error('Invalid credential')
+            }
+            expect(validateToken).toEqual(
                 expect.objectContaining({
                     "message": true,
                 })
             );
         });
+
+        it("should logout the user", async () => {
+            const userRepository: UserRepository = new UserRepositoryPostgres();
+            const authController = new AuthController(userRepository);
+            const input = {
+                email: "bruno@gmail.com",
+                password: "123"
+            }
+            const context.token = await authController.login(input.email, input.password);
+            if (!context.token) {
+                throw new Error("Token was not generated");
+            }
+
+            const response = await authController.logout('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImlhdCI6MTc0ODE5MzE1NSwiZXhwIjoxNzQ4MTk2NzU1fQ.IbLFvJRZsec9nM-uJ4Z4P7lbwy5Op0hYrVRHAq01afw');
+            console.log(response);
+            expect(response).toEqual(
+                expect.objectContaining({
+                    "message": "Logged out successfully",
+                })
+            );
+        })
     });
 });

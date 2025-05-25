@@ -1,7 +1,7 @@
 import fastify, { FastifyInstance, FastifyError, FastifyReply, FastifyRequest } from 'fastify';
 import cors from '@fastify/cors';
 import userRoutes from './routes/UserRoutes.js';
-import loginRoutes from './routes/LoginRoutes.js';
+import { LoginRoutes } from './routes/LoginRoutes.js';
 import tasksRoutes from './routes/TasksRoutes.js';
 import { UserRepositoryPostgres } from '../../adapters/postgres/UserRepositoryPostgres.js';
 import { TaskRepositoryPostgres } from '../../adapters/postgres/TaskRepositoryPostgres.js';
@@ -9,13 +9,14 @@ import { TaskRepositoryPostgres } from '../../adapters/postgres/TaskRepositoryPo
 const server: FastifyInstance = fastify();
 const userRepository = new UserRepositoryPostgres();
 const taskRepository = new TaskRepositoryPostgres();
+const login = new LoginRoutes(userRepository, server);
 
 await server.register(cors, {
     origin: 'http://localhost:5173',
     methods: ['GET', 'POST', 'PUT', 'DELETE']
 });
 
-await loginRoutes(server, { userRepository });
+login.execute();
 await userRoutes(server, { userRepository });
 await tasksRoutes(server, { taskRepository });
 

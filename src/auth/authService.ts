@@ -16,9 +16,6 @@ export async function loginUser(email: string, password: string, request: Fastif
     const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET!, {
         expiresIn: '1h',
     });
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: number; email: string };
-    await redis.set(`user:${decoded.id}:token`, token, 'EX', 3600);
-
     return reply.send({ token });
 }
 
