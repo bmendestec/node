@@ -21,7 +21,7 @@ export interface TaskRepository {
      * @param task - New task's data.
      * @returns Void.
      * */
-    edit(id: number, task: Task): Promise<Task>;
+    edit(id: number, task: Task): Promise<Task | null>;
 
     /**
      * Delete an existing task.

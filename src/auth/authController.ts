@@ -1,4 +1,3 @@
-import { FastifyReply, FastifyRequest } from 'fastify';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import redis from '../infra/redis/index.js';
@@ -12,9 +11,9 @@ export class AuthController {
         this.userRepository = userRepository;
     }
 
-    async login(email: string, password: string): Promise<String | undefined> {
+    async login(email: string, password: string): Promise<string | undefined> {
         try {
-            const user = await this.userRepository.findByEmail(email);            
+            const user = await this.userRepository.findByEmail(email);
             if (!user || !(await bcrypt.compare(password, user.password))) {
                 return 'Invalid credential';
             }
@@ -33,26 +32,28 @@ export class AuthController {
     async validateToken(token: string): Promise<object | undefined> {
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: number };
-            const storedToken = await redis.get(`user:${decoded.id}:token`);            
+            const storedToken = await redis.get(`user:${decoded.id}:token`);
             if (!storedToken && storedToken !== token) {
                 console.log('false');
                 return { message: false };
             }
-
+                        
             return { message: true }
         } catch (e) {
             console.log(e);
         }
     }
 
-    async logout(token: string): Promise<void> {
+    async logout(token: string): Promise<object | undefined> {
         try {
             const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: number };
-            console.log('User deleted: ', decoded.id);
-            await redis.del(`user:${decoded.id}:token`);
-
+            if (decoded) {
+                await redis.del(`user:${decoded.id}:token`);
+                return { message: "Logged out successfully!" };
+            }
         } catch (e) {
             console.log(e);
+            throw new Error("Failed to logout");
         }
     }
 }

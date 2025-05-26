@@ -4,15 +4,19 @@ import { UserRepository } from "../../domain/repositories/UserRepository";
 import { AuthController } from "../../auth/authController";
 import { UserRepositoryPostgres } from "../../adapters/postgres/UserRepositoryPostgres";
 import UserRepositoryInMemory from "./repository/UserRepositoryInMemory";
+import { LoginRoutes } from "../../infra/web/routes/LoginRoutes";
 
 jest.mock("../../infra/redis", () => ({
     set: jest.fn().mockResolvedValue('OK'),
     get: jest.fn().mockResolvedValue('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImlhdCI6MTc0ODE5MzE1NSwiZXhwIjoxNzQ4MTk2NzU1fQ.IbLFvJRZsec9nM-uJ4Z4P7lbwy5Op0hYrVRHAq01afw'),
     quit: jest.fn().mockResolvedValue('OK'),
+    del: jest.fn().mockResolvedValue(1),
 }));
 
 const app = fastify();
 const context: { token?: string } = {};
+const userRepository: UserRepository = new UserRepositoryPostgres();
+const authController = new AuthController(userRepository);
 
 describe('test the Login API', () => {
 
@@ -30,59 +34,58 @@ describe('test the Login API', () => {
         });
 
         it("should authenticate the user", async () => {
-            const userRepository: UserRepository = new UserRepositoryPostgres();
-            const authController = new AuthController(userRepository);
-            const input = {
-                email: "bruno@gmail.com",
-                password: "123"
-            }
-            const token = await authController.login(input.email, input.password);
+            const inputDto = { email: "bruno@gmail.com", password: "123" }
+            const token = await authController.login(inputDto.email, inputDto.password);
+            
             if (token === 'Invalid credential') {
                 throw new Error('Invalid credential')
             }
             expect(token).toBeDefined();
+            context.token = token;
+        });
+
+        it("should don't authenticate the user", async () => {
+            const inputDto = { email: "bruno@gmail.com", password: "1234" }
+            const token = await authController.login(inputDto.email, inputDto.password);
+
+            expect(token).toEqual(
+                expect.stringContaining('Invalid credential')
+            );
         });
 
 
         it("should validate the token received", async () => {
-            const userRepository: UserRepository = new UserRepositoryPostgres();
-            const authController = new AuthController(userRepository);
-            const input = {
-                email: "bruno@gmail.com",
-                password: "123"
-            }
-            const token = await authController.login(input.email, input.password);
-            if (!token) {
-                throw new Error("Token was not generated");
-            }
-            const validateToken = await authController.validateToken('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImlhdCI6MTc0ODE5MzE1NSwiZXhwIjoxNzQ4MTk2NzU1fQ.IbLFvJRZsec9nM-uJ4Z4P7lbwy5Op0hYrVRHAq01afw');
+            const inputDto = { email: "bruno@gmail.com", password: "123" }
+            const token = await authController.login(inputDto.email, inputDto.password);
+            
             if (token === 'Invalid credential') {
                 throw new Error('Invalid credential')
+            } else if (!token) {
+                throw new Error("Token was not generated");
             }
+
+            const validateToken = await authController.validateToken(token);
             expect(validateToken).toEqual(
                 expect.objectContaining({
-                    "message": true,
+                    message: true
                 })
             );
         });
 
         it("should logout the user", async () => {
-            const userRepository: UserRepository = new UserRepositoryPostgres();
-            const authController = new AuthController(userRepository);
-            const input = {
-                email: "bruno@gmail.com",
-                password: "123"
-            }
-            const context.token = await authController.login(input.email, input.password);
-            if (!context.token) {
+            const inputDto = { email: "bruno@gmail.com", password: "123" }
+            const token = await authController.login(inputDto.email, inputDto.password);
+
+            if (token === 'Invalid credential') {
+                throw new Error('Invalid credential')
+            } else if (!token) {
                 throw new Error("Token was not generated");
             }
 
-            const response = await authController.logout('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzQsImlhdCI6MTc0ODE5MzE1NSwiZXhwIjoxNzQ4MTk2NzU1fQ.IbLFvJRZsec9nM-uJ4Z4P7lbwy5Op0hYrVRHAq01afw');
-            console.log(response);
-            expect(response).toEqual(
+            const validateLogout = await authController.logout(token);
+            expect(validateLogout).toEqual(
                 expect.objectContaining({
-                    "message": "Logged out successfully",
+                    message: "Logged out successfully!",
                 })
             );
         })

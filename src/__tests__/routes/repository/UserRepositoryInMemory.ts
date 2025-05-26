@@ -65,7 +65,6 @@ export default class UserRepositoryInMemory implements UserRepository {
         });
         this.users.pop();
         this.users = this.users.filter(user => user.id === id);
-
     }
 
     async edit(id: number, updatedUser: Partial<User>): Promise<User> {
@@ -87,8 +86,6 @@ export default class UserRepositoryInMemory implements UserRepository {
 
         this.users[index] = { ...this.users[index], ...updatedUser };
         return this.users[index];
-
-
     }
 
     async findById(id: number): Promise<User | null> {

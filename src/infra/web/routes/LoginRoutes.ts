@@ -21,7 +21,10 @@ export class LoginRoutes {
                 reply.headers({ 'Authorization': `Bearer ${token}` });
                 reply.status(200).send({ token });
             } catch (error) {
-                console.error(error);
+                const err = error as Error;
+                if (err.message === 'Invalid credential') {
+                    return reply.status(401).send({ message: "Invalid email or password" });
+                }
                 return reply.status(500).send({ message: "Internal Server Error" });
             }
         });
@@ -32,9 +35,9 @@ export class LoginRoutes {
                 return reply.status(401).send({ message: 'Authorization header is missing' });
             }
             const token = authHeader.split(' ')[1];
-            await loginController.logout(token);
+            const response = await loginController.logout(token);
 
-            reply.send({ message: 'Logged out successfully' });
+            reply.send(response);
         });
 
         this.server.get('/validate-token', async (request: FastifyRequest, reply: FastifyReply) => {
@@ -45,7 +48,7 @@ export class LoginRoutes {
 
             const token = authHeader.split(' ')[1];
             const response = await loginController.validateToken(token);
-            
+
             reply.send(response);
         });
     }

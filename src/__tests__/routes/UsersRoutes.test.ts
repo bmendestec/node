@@ -13,15 +13,15 @@ jest.mock("../../infra/redis", () => ({
 }));
 
 const userRepositoryMock: UserRepository = new UserRepositoryInMemory();
-const user: User = {
+const user: User = ({
     id: 34,
-    name: "Bruno", 
-    email: "bruno@gmail.com", 
-    age: 28, 
-    birth_date: new Date('1997-02-28'), 
-    gender: "Male", 
+    name: "Bruno",
+    email: "bruno@gmail.com",
+    age: 28,
+    birth_date: new Date('1997-02-28'),
+    gender: "Male",
     password: "123"
-};
+});
 
 describe("UserRoutes API test", () => {
     beforeAll(async () => {
@@ -37,23 +37,60 @@ describe("UserRoutes API test", () => {
 
     describe("GET /usuarios", () => {
         it("should list all users", async () => {
-            await userRepositoryMock.list();
+            const response = await userRepositoryMock.list();
+            expect(response).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining(user)
+                ])
+            );
         });
 
         it("Should find an user by id", async () => {
-            await userRepositoryMock.findById(34);
+            const response = await userRepositoryMock.findById(34);
+            expect(response).toEqual(
+                expect.objectContaining(user)
+            );
         });
 
         it("It should find an user by email", async () => {
-            await userRepositoryMock.findByEmail("bruno@gmail.com");
+            const response = await userRepositoryMock.findByEmail("bruno@gmail.com");
+            expect(response).toEqual(
+                expect.objectContaining(user)
+            );
+        });
+
+        it("It should don't find an user by email", async () => {
+            const response = await userRepositoryMock.findByEmail("noexistuser@gmail.com");
+            expect(response).toBeNull();
         });
 
         it("It should delete a user by id", async () => {
-            await userRepositoryMock.delete(34);
+            const response = await userRepositoryMock.delete(34);
+            console.log(response);
+            expect(response).toBeUndefined;
         });
 
         it("It should edit the name of the user by id", async () => {
-            await userRepositoryMock.edit(34, user);
+            const response = await userRepositoryMock.edit(34, {
+                id: 34,
+                name: 'Bruno',
+                email: 'alterado@gmail.com',
+                age: 28,
+                birth_date: new Date('1997-02-08'),
+                gender: 'Male',
+                password: '123'
+            });
+            expect(response).toEqual(
+                expect.objectContaining({
+                    id: 34,
+                    name: 'Bruno',
+                    email: 'alterado@gmail.com',
+                    age: 28,
+                    birth_date: new Date('1997-02-08'),
+                    gender: 'Male',
+                    password: '123'
+                })
+            );
         });
     })
 });
