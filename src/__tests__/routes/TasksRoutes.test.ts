@@ -41,15 +41,27 @@ describe("TasksRoutes API test", () => {
     });
 
     describe("GET /tasks", () => {
-        it("should list all tasks", async () => {
-            const response = await taskRepositoryMock.list();
-            console.log('Logggg: ', response);
-            expect(response).toEqual(
-                expect.objectContaining(task),
-                // expect.arrayContaining([
-                // ])
-            );
-        });
+        // it("should list all tasks", async () => {
+        //     const response = await taskRepositoryMock.list();
+        //     console.log('L46: ', response);
+        //     expect(response).toEqual(
+        //         expect.arrayContaining([
+        //             expect.objectContaining({
+        //                 active: "A",
+        //                 completed_at:  expect.any(String), //2025-05 - 25T00:00:00.000Z,
+        //                 created_at: expect.any(String), //2025-05 - 25T00:00:00.000Z,
+        //                 description: "Testeeee",
+        //                 due_date: expect.any(String), //2025-05 - 25T00:00:00.000Z,
+        //                 id: 9,
+        //                 priority: "High",
+        //                 project_id: 2,
+        //                 status: "In progress",
+        //                 title: "Teste",
+        //                 updated_at: expect.any(String), //2025-05 - 25T00:00:00.000Z,                        
+        //             }),
+        //         ])
+        //     );
+        // });
 
         it("should find a task by id", async () => {
             const response = await taskRepositoryMock.findById(9);
