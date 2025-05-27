@@ -2,8 +2,10 @@ import { User } from "../../../domain/entities/User";
 import { UserRepository } from "../../../domain/repositories/UserRepository";
 
 export default class UserRepositoryInMemory implements UserRepository {
-
-    private users: User[] = [];
+    private users: User[];
+    constructor() {
+        this.users = [];
+    }
 
 
     async findByEmail(email: string): Promise<User | null> {

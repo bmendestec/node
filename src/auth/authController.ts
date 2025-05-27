@@ -11,11 +11,12 @@ export class AuthController {
         this.userRepository = userRepository;
     }
 
-    async login(email: string, password: string): Promise<string | undefined> {
+    async login(email: string, password: string): Promise<object | undefined> {
         try {
+            console.log('Entrou?');
             const user = await this.userRepository.findByEmail(email);
             if (!user || !(await bcrypt.compare(password, user.password))) {
-                return 'Invalid credential';
+                return { message: 'Invalid credential' };
             }
             const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET!, {
                 expiresIn: '1h',
@@ -23,7 +24,7 @@ export class AuthController {
 
             const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: number };
             await redis.set(`user:${decoded.id}:token`, token, 'EX', 3600);
-            return token;
+            return { token: token, id: decoded.id };
         } catch (e) {
             console.log(e);
         }
@@ -37,7 +38,7 @@ export class AuthController {
                 console.log('false');
                 return { message: false };
             }
-                        
+
             return { message: true }
         } catch (e) {
             console.log(e);

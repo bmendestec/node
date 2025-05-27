@@ -6,7 +6,14 @@ export class TaskRepositoryPostgres implements TaskRepository {
 
     async create(task: Task): Promise<Task> {
         try {
-            const { title, project_id, description, due_date, completed_at, priority, status , created_at, updated_at} = task;
+            const { title, project_id, description } = task;     
+            
+            const due_date = new Date();
+            const completed_at = new Date();
+            const created_at = new Date();
+            const updated_at = new Date();
+            const priority = "High";
+            const status = "In progress";
 
             await sql`
                insert into tasks (title, project_id, description, status, priority, due_date, completed_at, created_at, updated_at)

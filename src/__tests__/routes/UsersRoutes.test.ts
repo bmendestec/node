@@ -65,8 +65,7 @@ describe("UserRoutes API test", () => {
         });
 
         it("It should delete a user by id", async () => {
-            const response = await userRepositoryMock.delete(34);
-            console.log(response);
+            const response = await userRepositoryMock.delete(34);            
             expect(response).toBeUndefined;
         });
 
