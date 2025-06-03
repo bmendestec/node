@@ -6,14 +6,7 @@ export class TaskRepositoryPostgres implements TaskRepository {
 
     async create(task: Task): Promise<Task> {
         try {
-            const { title, project_id, description } = task;     
-            
-            const due_date = new Date();
-            const completed_at = new Date();
-            const created_at = new Date();
-            const updated_at = new Date();
-            const priority = "High";
-            const status = "In progress";
+            const { title, project_id, description, status, priority, due_date, completed_at, created_at, updated_at } = task;     
 
             await sql`
                insert into tasks (title, project_id, description, status, priority, due_date, completed_at, created_at, updated_at)
@@ -34,7 +27,7 @@ export class TaskRepositoryPostgres implements TaskRepository {
 
         return search
             ? sql<Task[]>`SELECT * FROM tasks WHERE title ILIKE ${sanitizedSearch} or description ILIKE ${sanitizedSearch} or status ILIKE ${sanitizedSearch}`
-            : sql<Task[]>`SELECT * FROM tasks order by created_at desc`;
+            : sql<Task[]>`SELECT * FROM tasks order by id desc`;
     }
 
     async edit(id: number, task: Task): Promise<Task> {

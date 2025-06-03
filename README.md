@@ -92,9 +92,14 @@ The project is organized as follows:
    - Create a `.env` file in the root directory.
    - Add the following variables:
      ```
-     DATABASE_URL=your_postgresql_connection_string
-     HOST=localhost
-     PORT=3000
+     PGHOST= (PG host from postgress settings)
+     PGDATABASE= (database name)
+     PGUSER= (database user)
+     PGPASSWORD= (database password)
+     ENDPOINT_ID= (database endpoint id)
+     JWT_SECRET='YOUR_JWT_SECRET_KAY'
+     HOST='localhost'
+     PORT='8080'
      ```
 
 4. Run database migrations (if applicable):
