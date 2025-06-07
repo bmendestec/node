@@ -1,0 +1,9 @@
+{
+    "presets": [
+        "@babel/preset-env", // Transpiles modern JavaScript to older versions for compatibility
+        "@babel/preset-typescript" // Adds support for TypeScript
+    ],
+    "plugins": [
+        "@babel/plugin-transform-runtime" // Optimizes helper code and avoids duplication
+    ]
+}
