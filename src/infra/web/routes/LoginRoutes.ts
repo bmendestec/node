@@ -18,6 +18,9 @@ export class LoginRoutes {
             try {
                 const { email, password } = request.body as { email: string; password: string };
                 const token = await loginController.login(email, password);
+                if (!token) {
+                    throw new Error('Invalid credentials');
+                }
                 reply.headers({ 'Authorization': `Bearer ${token}` });
                 reply.status(200).send(token);
             } catch (error) {

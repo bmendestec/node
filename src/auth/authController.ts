@@ -12,11 +12,10 @@ export class AuthController {
     }
 
     async login(email: string, password: string): Promise<object | undefined> {
-        try {
-            console.log('Entrou?');
+        try {            
             const user = await this.userRepository.findByEmail(email);
             if (!user || !(await bcrypt.compare(password, user.password))) {
-                return { message: 'Invalid credential' };
+                return { message: 'Invalid credentials' };
             }
             const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET!, {
                 expiresIn: '1h',
